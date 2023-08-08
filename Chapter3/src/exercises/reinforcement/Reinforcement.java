@@ -1,5 +1,6 @@
 package exercises.reinforcement;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import fundamentalDataStructures.CircularlyLinkedList;
@@ -178,7 +179,7 @@ public final class Reinforcement {
 	}
 
 	/**
-	 * R-3.11 Give an implementation of the size( ) method for the DoublyLinkedList
+	 * R-3.11 Give an implementation of the size() method for the DoublyLinkedList
 	 * class, assuming that we did not maintain size as an instance variable.
 	 */
 	public static void reinforcement11() {
@@ -197,6 +198,96 @@ public final class Reinforcement {
 	 * node.
 	 */
 	public static void reinforcement12() {
+		SinglyLinkedList<Integer> singlyLinkedList = new SinglyLinkedList<>();
+		singlyLinkedList.addFirst(1);
+		singlyLinkedList.addLast(2);
+		singlyLinkedList.addLast(3);
+		singlyLinkedList.addFirst(0);
+		singlyLinkedList.rotate();
+		System.out.println(singlyLinkedList.last());
+	}
 
+	/**
+	 * R-3.13 What is the difference between a shallow equality test and a deep
+	 * equality test between two Java arrays, A and B, if they are one-dimensional
+	 * arrays of type int? What if the arrays are two-dimensional arrays of type
+	 * int?
+	 */
+	public static void reinforcement13() {
+		/* Consider two one-dimensional arrays: */
+		int[] array1 = { 1, 2, 3 };
+		int[] array2 = { 1, 2, 3 };
+		/*
+		 * A shallow equality would be comparing each element of array1 at position i
+		 * with it's corresponding element of array2 at position k where i and k are two
+		 * indices of the array such that array1.length == array2.length. This equality
+		 * would be true if every element in array1 at (i) is equal to it's
+		 * corresponding element in array2 at (k).
+		 */
+		// Eg -->
+		System.out.println(Arrays.equals(array1, array2)); // True
+
+		/* Now consider two two-dimensional arrays: */
+		int[][] mArray1 = { { 1, 2, 3, 4 }, { 5, 6, 7, 8 } };
+		int[][] mArray2 = { { 1, 2, 3, 4 }, { 5, 6, 7, 8 } };
+		/*
+		 * If were to use the same Arrays.equals() approach this would result in a
+		 * failure since multidimensional arrays are arrays inside of arrays. Eg -->
+		 * [[],[],[]]. And Arrays.equals(mArray1,mArray2) would result in
+		 * a[i].equals(b[i]) resulting in false since each index in a multidimensional
+		 * array is not a primitive rather a reference to another array eg -->
+		 * mArray1[0].equals(mArray2[0]); it would do a comparison of a row 0 of mArray1
+		 * with row 0 of mArray2 which is obviously false, Since they both are at
+		 * different memory locations. Therefore we use deep equality tests with
+		 * Arrays.deepEquals() which would call Arrays.deepEquals() for corresponding
+		 * entries rather than a[k].equals(b[k]).
+		 */
+		// Eg ->
+		System.out.println(Arrays.deepEquals(mArray1, mArray2)); // True
+	}
+
+	/**
+	 * R-3.14 Give three different examples of a single Java statement that assigns
+	 * variable, backup, to a new array with copies of all int entries of an
+	 * existing array, original.
+	 */
+	public static void reinforcement14() {
+		int data[] = { 1, 2, 3, 4, 5 };
+		int backup[];
+		backup = data.clone();
+		backup = Arrays.copyOf(data, data.length);
+		backup = Arrays.copyOfRange(data, 0, data.length);
+	}
+
+	/**
+	 * R-3.15 Implement the equals() method for the CircularlyLinkedList class,
+	 * assuming that two lists are equal if they have the same sequence of elements,
+	 * with corresponding elements currently at the front of the list.
+	 */
+	public static void reinforcement15() {
+		CircularlyLinkedList<Integer> circularlyLinkedList1 = new CircularlyLinkedList<>();
+		CircularlyLinkedList<Integer> circularlyLinkedList2 = new CircularlyLinkedList<>();
+		circularlyLinkedList1.addFirst(1);
+		circularlyLinkedList1.addLast(2);
+		circularlyLinkedList1.addLast(3);
+
+		circularlyLinkedList2.addFirst(1);
+		circularlyLinkedList2.addLast(2);
+		circularlyLinkedList2.addLast(3);
+		System.out.println(circularlyLinkedList1.equals(circularlyLinkedList2));
+	}
+
+	/** R-3.16 Implement the equals( ) method for the DoublyLinkedList class. */
+	public static void reinforcement16() {
+		DoublyLinkedList<Integer> doublyLinkedList1 = new DoublyLinkedList<>();
+		DoublyLinkedList<Integer> doublyLinkedList2 = new DoublyLinkedList<>();
+		doublyLinkedList1.addFirst(1);
+		doublyLinkedList1.addLast(2);
+		doublyLinkedList1.addLast(3);
+
+		doublyLinkedList2.addFirst(1);
+		doublyLinkedList2.addLast(2);
+		doublyLinkedList2.addLast(3);
+		System.out.println(doublyLinkedList1.equals(doublyLinkedList2));
 	}
 }

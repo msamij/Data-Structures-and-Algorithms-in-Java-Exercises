@@ -107,6 +107,28 @@ public class DoublyLinkedList<E> {
 		size++;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o == null)
+			return false;
+		if (getClass() != o.getClass())
+			return false;
+
+		DoublyLinkedList<?> other = (DoublyLinkedList<?>) o;
+		if (size() != other.size())
+			return false;
+
+		Node<?> walkA = header.getNext();
+		Node<?> walkB = other.header.getNext();
+		while (walkA.getElement() != null) {
+			if (!walkA.getElement().equals(walkB.getElement()))
+				return false;
+			walkA = walkA.getNext();
+			walkB = walkB.getNext();
+		}
+		return true;
+	}
+
 	private static class Node<E> {
 		private E element; // reference to the element stored at this node.
 		private Node<E> prev; // reference to the previous node in the list.

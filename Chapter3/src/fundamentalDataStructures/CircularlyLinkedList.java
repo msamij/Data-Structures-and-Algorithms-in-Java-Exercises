@@ -73,6 +73,28 @@ public class CircularlyLinkedList<E> {
 		return head.getElement();
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o == null)
+			return false;
+		if (getClass() != o.getClass())
+			return false;
+
+		CircularlyLinkedList<?> other = (CircularlyLinkedList<?>) o;
+		if (size() != other.size())
+			return false;
+
+		Node<?> walkA = tail;
+		Node<?> walkB = other.tail;
+		for (int i = 0; i < size(); i++) {
+			if (!walkA.getElement().equals(walkB.getElement()))
+				return false;
+			walkA = walkA.getNext();
+			walkB = walkB.getNext();
+		}
+		return true;
+	}
+
 	private static class Node<E> {
 		private E element; // reference to the element stored at this node
 		private Node<E> next; // reference to the subsequent node in the list

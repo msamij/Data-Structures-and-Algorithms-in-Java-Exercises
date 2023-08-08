@@ -56,6 +56,15 @@ public class SinglyLinkedList<E> implements Cloneable {
 		size++;
 	}
 
+	public void rotate() {
+		if (size() > 1) { // If list contains only a single node, there's point to rotate it.
+			Node<E> prevHead = head;
+			head = head.getNext();
+			tail.setNext(prevHead);
+			tail = prevHead;
+		}
+	}
+
 	public E removeFirst() { // removes and returns the first element
 		if (isEmpty())
 			return null; // nothing to remove

@@ -8,7 +8,7 @@ import utilityClasses.TicTacToe;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Reinforcement.reinforcement12();
+        Reinforcement.reinforcement16();
     }
 
     static void insertionSort(int[] data) {
@@ -39,7 +39,7 @@ public class App {
          * Returns an array of size n such that the first k elements of
          * this array are copied from A, where k = min{n, A.length}. If n > A.length,
          * then the last n − A.length elements in this array will be padded with default
-         * values, e.g., 0 for an array of int and null for an array of objects
+         * values, e.g -> 0 for an array of int and null for an array of objects.
          * 
          * This create an array of the values = [4, 2, 3, 5, 1, 0, 0] since size of
          * array2 is 5 and n is 7 (n - array2.length = 2) last two elements will be
@@ -53,7 +53,8 @@ public class App {
          * copied in order from A[s] to A[t − 1], where s < t, padded as with copyOf()
          * if t > A.length.
          */
-        int[] array5 = Arrays.copyOfRange(array2, 0, 6);
+        /* Result in an array of [4, 2, 3, 5, 1] */
+        int[] array5 = Arrays.copyOfRange(array2, 0, 5);
     }
 
     static void randomArraysTest() {
