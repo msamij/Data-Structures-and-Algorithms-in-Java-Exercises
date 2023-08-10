@@ -36,16 +36,13 @@ public final class Reinforcement {
 		Random random = new Random();
 		random.setSeed(System.currentTimeMillis());
 
-		boolean isEmpty = false;
 		int counter = 0;
-		while (!isEmpty) {
+		while (counter < myArray.length) {
 			rand = random.nextInt(myArray.length);
 			if (myArray[rand] != 0) {
 				myArray[rand] = 0;
 				counter++;
 			}
-			if (counter == myArray.length)
-				isEmpty = true;
 		}
 
 		for (int i : myArray) {

@@ -24,6 +24,29 @@ public class ScoreBoard {
 		}
 	}
 
+	/** Creativity C-3.19 */
+	public void addCreativity3(GameEntry e) {
+		int newScore = e.getScore();
+
+		if (numEntries < board.length || newScore > board[numEntries - 1].getScore()) {
+			if (numEntries < board.length) {
+				numEntries++;
+				board[numEntries - 1] = e;
+			}
+
+		}
+	}
+
+	/** Creativity C-3.19 */
+	public GameEntry removeCreativity3(int i) throws IndexOutOfBoundsException {
+		if (i < 0 || i >= numEntries)
+			throw new IndexOutOfBoundsException("Invalid index:" + i);
+		GameEntry temp = board[i];
+		board[i] = null;
+		numEntries--;
+		return temp;
+	}
+
 	public GameEntry remove(int i) throws IndexOutOfBoundsException {
 		if (i < 0 || i >= numEntries)
 			throw new IndexOutOfBoundsException("Invalid index:" + i);
@@ -33,5 +56,13 @@ public class ScoreBoard {
 		board[numEntries - 1] = null;
 		numEntries--;
 		return temp;
+	}
+
+	public int getNumEntries() {
+		return numEntries;
+	}
+
+	public GameEntry[] getBoard() {
+		return board;
 	}
 }

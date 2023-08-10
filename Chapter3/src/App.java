@@ -1,14 +1,15 @@
 import java.util.Arrays;
 import java.util.Random;
 
-import exercises.reinforcement.Reinforcement;
+import exercises.creativity.Creativity;
 import fundamentalDataStructures.SinglyLinkedList;
 import utilityClasses.CaesarCipher;
 import utilityClasses.TicTacToe;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Reinforcement.reinforcement16();
+        int[] array = { 1, 5, 3, 2, 1, 0, 8, 5, 2, 7, 7, 8, 3 }; // creativity 2
+        Creativity.creativity6(array);
     }
 
     static void insertionSort(int[] data) {
