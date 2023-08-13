@@ -4,7 +4,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.Stack;
 
+import fundamentalDataStructures.DoublyLinkedList;
+import fundamentalDataStructures.SinglyLinkedList;
 import utilityClasses.GameEntry;
 import utilityClasses.ScoreBoard;
 
@@ -125,5 +128,190 @@ public class Creativity {
 		for (int i : array) {
 			System.out.println(i);
 		}
+	}
+
+	/**
+	 * C-3.23 Suppose you are designing a multiplayer game that has n ≥ 1000
+	 * players, numbered 1 to n, interacting in an enchanted forest. The winner of
+	 * this game is the first player who can meet all the other players at least
+	 * once (ties are allowed). Assuming that there is a method meet(i, j), which is
+	 * called each time a player i meets a player j (with i != j), describe a way
+	 * to keep track of the pairs of meeting players and who is the winner.
+	 */
+	public static void creativity7() {
+		class Player {
+			final int playerNo;
+			int meetCount;
+
+			Player(int playerNo) {
+				this.playerNo = playerNo;
+				this.meetCount = 0;
+			}
+		}
+		class PlayerPair {
+			final Player player1;
+			final Player player2;
+
+			PlayerPair(Player player1, Player player2) {
+				this.player1 = player1;
+				this.player2 = player2;
+			}
+		}
+		class MultiplayerGame {
+			final Player[] players;
+			private final Stack<PlayerPair> playerPairs;
+
+			MultiplayerGame() {
+				this.players = new Player[10];
+				this.playerPairs = new Stack<>();
+			}
+
+			void initializePlayers() {
+				for (int i = 0; i < players.length; i++) {
+					players[i] = new Player(i + 1);
+				}
+			}
+
+			void playGame(int startingPlayer) {
+				Player i = players[startingPlayer - 1];
+				Player j = null;
+
+				for (int k = 0; k < players.length; k++) {
+					// (startingPlayer - 1) since player starting from non-zero value.
+					if (k != startingPlayer - 1) {
+						j = players[k];
+						meet(i, j);
+					}
+				}
+			}
+
+			void isWinner(int playerNo) {
+				PlayerPair poppedPlayer = playerPairs.pop();
+				if (poppedPlayer.player1.playerNo == playerNo) {
+					if (poppedPlayer.player1.meetCount == players.length - 1)
+						System.out.println("Winner is player: " + playerNo);
+
+				} else if (poppedPlayer.player2.playerNo == playerNo) {
+					if (poppedPlayer.player2.meetCount == players.length - 1)
+						System.out.println("Winner is player: " + playerNo);
+				} else
+					System.out.println("There's a tie!");
+			}
+
+			private void meet(Player i, Player j) {
+				i.meetCount++;
+				j.meetCount++;
+				playerPairs.add(new PlayerPair(i, j));
+			}
+		}
+
+		MultiplayerGame multiplayerGame = new MultiplayerGame();
+		multiplayerGame.initializePlayers();
+		multiplayerGame.playGame(2);
+		multiplayerGame.isWinner(2);
+	}
+
+	/**
+	 * C-3.24 Write a Java method that takes two three-dimensional integer arrays
+	 * and adds them componentwise.
+	 */
+	public static void creativity8(int x, int rows, int columns) {
+		int[][][] array1 = new int[x][rows][columns];
+		int[][][] array2 = new int[x][rows][columns];
+		int[][][] resultArray = new int[x][rows][columns];
+
+		if (x == 0)
+			throw new IllegalArgumentException("x must be > 0");
+		if (rows != columns)
+			throw new IllegalArgumentException("Rows and columns must be of equal length");
+
+		int count = 1;
+		for (int i = 0; i < x; i++) {
+			for (int j = 0; j < rows; j++) {
+				for (int k = 0; k < columns; k++) {
+					array1[i][j][k] = count;
+					count++;
+				}
+			}
+		}
+
+		for (int i = 0; i < x; i++) {
+			for (int j = 0; j < rows; j++) {
+				for (int k = 0; k < columns; k++) {
+					array2[i][j][k] = count;
+					count++;
+				}
+			}
+		}
+
+		for (int i = 0; i < x; i++) {
+			for (int j = 0; j < rows; j++) {
+				for (int k = 0; k < columns; k++) {
+					resultArray[i][j][k] = array1[i][j][k] + array2[i][j][k];
+					count++;
+				}
+			}
+		}
+
+		// Printing the 3D array
+		for (int i = 0; i < x; i++) {
+			for (int j = 0; j < rows; j++) {
+				for (int k = 0; k < columns; k++) {
+					System.out.print(resultArray[i][j][k] + " ");
+				}
+				System.out.println();
+			}
+			System.out.println();
+		}
+	}
+
+	/**
+	 * C-3.25 Describe an algorithm for concatenating two singly linked lists L and
+	 * M, into a single list L′ that contains all the nodes of L followed by all
+	 * the nodes of M.
+	 */
+	public static void creativity9() {
+		SinglyLinkedList<Integer> L = new SinglyLinkedList<>();
+		SinglyLinkedList<Integer> M = new SinglyLinkedList<>();
+		L.addFirst(1);
+		L.addLast(2);
+		L.addLast(3);
+
+		M.addFirst(4);
+		M.addLast(5);
+		M.addLast(6);
+		SinglyLinkedList<Integer> concatenateLinkedList = new SinglyLinkedList<>();
+		concatenateLinkedList.concatenateList(L, M);
+		System.out.println(concatenateLinkedList.first());
+		System.out.println(concatenateLinkedList.last());
+	}
+
+	/**
+	 * C-3.26 Give an algorithm for concatenating two doubly linked lists L and M,
+	 * with header and trailer sentinel nodes, into a single list L′ .
+	 */
+	public static void creativity10() {
+		DoublyLinkedList<Integer> L = new DoublyLinkedList<>();
+		DoublyLinkedList<Integer> M = new DoublyLinkedList<>();
+		L.addFirst(1);
+		L.addLast(2);
+		L.addLast(3);
+
+		M.addFirst(4);
+		M.addLast(5);
+		M.addLast(6);
+		DoublyLinkedList<Integer> concatenateDoublyLinkedList = new DoublyLinkedList<>();
+		concatenateDoublyLinkedList.concatenateLinkedList(L, M);
+		System.out.println(concatenateDoublyLinkedList.first());
+		System.out.println(concatenateDoublyLinkedList.last());
+	}
+
+	/**
+	 * C-3.27 Describe in detail how to swap two nodes x and y (and not just their
+	 * contents) in a singly linked list L given references only to x and y. Repeat
+	 * this exercise for the case when L is a doubly linked list. Which algorithm
+	 * takes more time?
+	 */
+	public static void creativity11() {
 	}
 }

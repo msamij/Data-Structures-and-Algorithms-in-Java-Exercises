@@ -90,6 +90,16 @@ public class SinglyLinkedList<E> implements Cloneable {
 		return walk.getElement();
 	}
 
+	public void concatenateList(SinglyLinkedList<E> L, SinglyLinkedList<E> M) {
+		if (L.size() == 0 || M.size() == 0)
+			throw new IllegalArgumentException("LinkedLists cannot be empty");
+		head = L.getHead(); // point head to first linkedlist head.
+		tail = L.getTail(); // point tail to first linkedlist tail.
+		tail.setNext(M.getHead()); // set tail's next to 2nd linkedlist head. (two lists are now joined)
+		tail = M.getTail(); // set tail to refer to 2nd list tail.
+		size = L.getSize() + M.getSize(); // update list size.
+	}
+
 	private static class Node<E> {
 		private E element; // reference to the element stored at this node
 		private Node<E> next; // reference to the subsequent node in the list
@@ -174,5 +184,29 @@ public class SinglyLinkedList<E> implements Cloneable {
 			}
 		}
 		return other;
+	}
+
+	public Node<E> getHead() {
+		return head;
+	}
+
+	public Node<E> getTail() {
+		return tail;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setHead(Node<E> head) {
+		this.head = head;
+	}
+
+	public void setTail(Node<E> tail) {
+		this.tail = tail;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
 	}
 }

@@ -5,7 +5,7 @@ public class DoublyLinkedList<E> {
 	private Node<E> trailer; // trailer sentinel
 	private int size = 0;
 
-	/* Constructs a new empty list. */
+	/** Constructs a new empty list. */
 	public DoublyLinkedList() {
 		header = new Node<>(null, null, null);
 		trailer = new Node<>(null, header, null); // trailer is preceded by header
@@ -25,6 +25,26 @@ public class DoublyLinkedList<E> {
 			size++;
 		}
 		return size;
+	}
+
+	public void concatenateLinkedList(DoublyLinkedList<E> L, DoublyLinkedList<E> M) {
+		if (L.size() == 0 || M.size() == 0)
+			throw new IllegalArgumentException("LinkedLists cannot be empty");
+		header = L.getHeader();
+		trailer = L.getTrailer();
+		Node<E> firstNodeOfSecondList = M.getHeader().getNext();
+		Node<E> lastNodeOfSecondList = M.getTrailer().getPrev();
+
+		// Set next pointer of last node of (1st list) to 1st node of (2nd list).
+		trailer.getPrev().setNext(firstNodeOfSecondList);
+		// Set previous pointer of first node of (2nd list) to last node of (1st list).
+		firstNodeOfSecondList.setPrev(trailer.getPrev());
+		// Set trailer's previous pointer to last node of (2nd list).
+		trailer.setPrev(lastNodeOfSecondList);
+		// Set next pointer of last node to trailer.
+		lastNodeOfSecondList.setNext(lastNodeOfSecondList);
+
+		size = L.getSize() + M.getSize();
 	}
 
 	public boolean isEmpty() {
@@ -159,5 +179,17 @@ public class DoublyLinkedList<E> {
 		public void setNext(Node<E> n) {
 			next = n;
 		}
+	}
+
+	public Node<E> getHeader() {
+		return header;
+	}
+
+	public Node<E> getTrailer() {
+		return trailer;
+	}
+
+	public int getSize() {
+		return size;
 	}
 }
