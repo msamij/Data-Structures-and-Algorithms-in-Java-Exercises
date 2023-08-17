@@ -92,7 +92,7 @@ public class SinglyLinkedList<E> implements Cloneable {
 
 	public void concatenateList(SinglyLinkedList<E> L, SinglyLinkedList<E> M) {
 		if (L.size() == 0 || M.size() == 0)
-			throw new IllegalArgumentException("LinkedLists cannot be empty");
+			throw new IllegalArgumentException("LinkedLists cannot be empty!");
 		head = L.getHead(); // point head to first linkedlist head.
 		tail = L.getTail(); // point tail to first linkedlist tail.
 		tail.setNext(M.getHead()); // set tail's next to 2nd linkedlist head. (two lists are now joined)
@@ -100,7 +100,150 @@ public class SinglyLinkedList<E> implements Cloneable {
 		size = L.getSize() + M.getSize(); // update list size.
 	}
 
-	private static class Node<E> {
+	public void swapNodes(Node<E> x, Node<E> y) {
+		if (x == null || y == null)
+			throw new IllegalArgumentException("LinkedList is empty!");
+		if (x == y)
+			throw new IllegalArgumentException("x and y both refer to same node.");
+
+		// Node<E> walkA = head;
+		// Node<E> walkB = head;
+
+		// Keep a reference of prev node of (x) in case we found a match.
+		// Node<E> xPrevNode = head;
+		// Keep a reference of prev node of (y) in case we found a match.
+		// Node<E> yPrevNode = head;
+
+		// Node<E> xNext = x.getNext();
+		// Node<E> yNext = y.getNext();
+
+		// Find prev node of (x).
+		// while (walkA != x) {
+		// xPrevNode = walkA;
+		// walkA = walkA.getNext();
+		// }
+
+		// Find prev node of (y).
+		// while (walkB != y) {
+		// yPrevNode = walkB;
+		// walkB = walkB.getNext();
+		// }
+
+		// Nodes are adjancent to each other.
+		// if (nodesAdjacent(x, y)) {
+		// xPrevNode.setNext(y);
+		// x.setNext(y.getNext());
+		// System.out.println(xPrevNode.getNext());
+		// y.setNext(x);
+		// } else if (nodesAdjacent(y, x)) {
+		// yPrevNode.setNext(x);
+		// y.setNext(x.getNext());
+		// x.setNext(y);
+		// }
+
+		// xPrevNode.setNext(y);
+		// yPrevNode.setNext(x);
+		// x.setNext(yNext);
+		// y.setNext(xNext);
+
+		// Update tail pointer if x or y was last node.
+		// if (tail == y) {
+		// tail = x;
+		// } else if (tail == x) {
+		// tail = y;
+		// }
+		// if (head == y)
+		// head = x;
+		// else if (head == x)
+		// head = y;
+
+		class SwapNodes {
+			private Node<E> xPrevNode = head;
+			private Node<E> yPrevNode = head;
+			private Node<E> xNext = x.getNext();
+			private Node<E> yNext = y.getNext();
+
+			public void swapNodes() {
+				findPrevNodes();
+
+				// if (x --> y)
+				if (nodesAdjacent(x, y))
+					swapAdjacentNodes(xPrevNode, x, y);
+				// if (y --> x)
+				else if (nodesAdjacent(y, x))
+					swapAdjacentNodes(yPrevNode, y, x);
+				else
+					swapUnAdjacentNodes();
+
+				updateTail();
+				updateHead();
+			}
+
+			private void findPrevNodes() {
+				Node<E> walkA = head;
+				Node<E> walkB = head;
+
+				// Find prev node of (x).
+				while (walkA != x) {
+					xPrevNode = walkA;
+					walkA = walkA.getNext();
+				}
+				// Find prev node of (y).
+				while (walkB != y) {
+					yPrevNode = walkB;
+					walkB = walkB.getNext();
+				}
+			}
+
+			private boolean nodesAdjacent(Node<E> n1, Node<E> n2) {
+				return n1.getNext() == n2;
+			}
+
+			private void swapUnAdjacentNodes() {
+				xPrevNode.setNext(y);
+				yPrevNode.setNext(x);
+				x.setNext(yNext);
+				y.setNext(xNext);
+			}
+
+			/** Update tail pointer if x or y point to last node. */
+			private void updateTail() {
+				if (tail == y)
+					tail = x;
+				else if (tail == x)
+					tail = y;
+			}
+
+			/** Update head pointer if x or y point to last node. */
+			private void updateHead() {
+				if (head == y)
+					head = x;
+				else if (head == x)
+					head = y;
+			}
+
+			/**
+			 * Swap adjacent nodes with each other.
+			 * Example: If x points to y after swap y will point to x.
+			 * 
+			 * @param prevNode    Previous node of predecessor.
+			 * @param predecessor Predecessor node to be swap with successor.
+			 * @param successor   Successor node to be swap with predecessor.
+			 */
+			private void swapAdjacentNodes(Node<E> prevNode, Node<E> predecessor, Node<E> successor) {
+				prevNode.setNext(successor);
+				predecessor.setNext(successor.getNext());
+				successor.setNext(predecessor);
+			}
+		}
+		new SwapNodes().swapNodes();
+	}
+
+	private boolean nodesAdjacent(Node<E> n1, Node<E> n2) {
+		return n1.getNext() == n2;
+	}
+
+	public static class Node<E> {
 		private E element; // reference to the element stored at this node
 		private Node<E> next; // reference to the subsequent node in the list
 

@@ -313,5 +313,15 @@ public class Creativity {
 	 * takes more time?
 	 */
 	public static void creativity11() {
+		SinglyLinkedList<Integer> L = new SinglyLinkedList<>();
+		L.addFirst(1);
+		L.addLast(2);
+		L.addLast(3);
+		// L.addLast(4);
+		L.swapNodes(L.getTail(), L.getHead());
+		while (L.getHead() != null) {
+			System.out.println(L.getHead().getElement());
+			L.setHead(L.getHead().getNext());
+		}
 	}
 }
