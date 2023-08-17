@@ -106,57 +106,6 @@ public class SinglyLinkedList<E> implements Cloneable {
 		if (x == y)
 			throw new IllegalArgumentException("x and y both refer to same node.");
 
-		// Node<E> walkA = head;
-		// Node<E> walkB = head;
-
-		// Keep a reference of prev node of (x) in case we found a match.
-		// Node<E> xPrevNode = head;
-		// Keep a reference of prev node of (y) in case we found a match.
-		// Node<E> yPrevNode = head;
-
-		// Node<E> xNext = x.getNext();
-		// Node<E> yNext = y.getNext();
-
-		// Find prev node of (x).
-		// while (walkA != x) {
-		// xPrevNode = walkA;
-		// walkA = walkA.getNext();
-		// }
-
-		// Find prev node of (y).
-		// while (walkB != y) {
-		// yPrevNode = walkB;
-		// walkB = walkB.getNext();
-		// }
-
-		// Nodes are adjancent to each other.
-		// if (nodesAdjacent(x, y)) {
-		// xPrevNode.setNext(y);
-		// x.setNext(y.getNext());
-		// System.out.println(xPrevNode.getNext());
-		// y.setNext(x);
-		// } else if (nodesAdjacent(y, x)) {
-		// yPrevNode.setNext(x);
-		// y.setNext(x.getNext());
-		// x.setNext(y);
-		// }
-
-		// xPrevNode.setNext(y);
-		// yPrevNode.setNext(x);
-		// x.setNext(yNext);
-		// y.setNext(xNext);
-
-		// Update tail pointer if x or y was last node.
-		// if (tail == y) {
-		// tail = x;
-		// } else if (tail == x) {
-		// tail = y;
-		// }
-		// if (head == y)
-		// head = x;
-		// else if (head == x)
-		// head = y;
-
 		class SwapNodes {
 			private Node<E> xPrevNode = head;
 			private Node<E> yPrevNode = head;
@@ -237,10 +186,6 @@ public class SinglyLinkedList<E> implements Cloneable {
 			}
 		}
 		new SwapNodes().swapNodes();
-	}
-
-	private boolean nodesAdjacent(Node<E> n1, Node<E> n2) {
-		return n1.getNext() == n2;
 	}
 
 	public static class Node<E> {
