@@ -319,7 +319,7 @@ public class Creativity {
 		L.addLast(3);
 		L.addLast(4);
 
-		L.swapNodes(L.getTail(), L.getHead().getNext());
+		L.swapNodes(L.getTail(), L.getHead());
 
 		while (L.getHead() != null) {
 			System.out.println(L.getHead().getElement());

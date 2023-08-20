@@ -100,92 +100,115 @@ public class SinglyLinkedList<E> implements Cloneable {
 		size = L.getSize() + M.getSize(); // update list size.
 	}
 
+	private class SwapNodes {
+		private Node<E> xPrevNode = head;
+		private Node<E> yPrevNode = head;
+		private Node<E> xNode = null;
+		private Node<E> yNode = null;
+		private Node<E> xNext = null;
+		private Node<E> yNext = null;
+
+		/**
+		 * 
+		 * @param x Reference to a node (x) to be replaced with another node (y).
+		 *          (must not be null)
+		 * @param y Reference to a node (y) to be replaced with another node (x).
+		 *          (must not be null)
+		 */
+		public SwapNodes(Node<E> x, Node<E> y) {
+			xNode = x;
+			yNode = y;
+			xNext = x.getNext();
+			yNext = y.getNext();
+		}
+
+		/**
+		 * Swap given nodes x and y with each other and not just their contents but
+		 * their position in the linkedlist.
+		 */
+		public void swapNodes() {
+			findPrevNodes();
+			// if (x --> y)
+			if (nodesAdjacent(xNode, yNode)) {
+				swapAdjacentNodes(xPrevNode, xNode, yNode);
+			}
+			// if (y --> x)
+			else if (nodesAdjacent(this.yNode, this.xNode)) {
+				swapAdjacentNodes(yPrevNode, this.yNode, this.xNode);
+			} else {
+				swapUnAdjacentNodes();
+			}
+
+			updateTail();
+			updateHead();
+		}
+
+		private void findPrevNodes() {
+			Node<E> walkA = head;
+			Node<E> walkB = head;
+
+			// Find prev node of (x).
+			while (walkA != this.xNode) {
+				xPrevNode = walkA;
+				walkA = walkA.getNext();
+			}
+			// Find prev node of (y).
+			while (walkB != this.yNode) {
+				yPrevNode = walkB;
+				walkB = walkB.getNext();
+			}
+		}
+
+		private boolean nodesAdjacent(Node<E> n1, Node<E> n2) {
+			return n1.getNext() == n2;
+		}
+
+		private void swapUnAdjacentNodes() {
+			xPrevNode.setNext(yNode);
+			yPrevNode.setNext(xNode);
+			xNode.setNext(yNext);
+			yNode.setNext(xNext);
+		}
+
+		/** Update tail pointer if x or y point to last node. */
+		private void updateTail() {
+			if (tail == yNode) {
+				tail = xNode;
+			} else if (tail == xNode) {
+				tail = yNode;
+			}
+		}
+
+		/** Update head pointer if x or y point to first node. */
+		private void updateHead() {
+			if (head == yNode) {
+				head = xNode;
+			} else if (head == xNode)
+				head = yNode;
+		}
+
+		/**
+		 * Swap adjacent nodes with each other.
+		 * Example: If x points to y after swap y will point to x.
+		 * 
+		 * @param prevNode    Previous node of predecessor.
+		 * @param predecessor Predecessor node to be swap with successor.
+		 * @param successor   Successor node to be swap with predecessor.
+		 */
+		private void swapAdjacentNodes(Node<E> prevNode, Node<E> predecessor, Node<E> successor) {
+			prevNode.setNext(successor);
+			predecessor.setNext(successor.getNext());
+			successor.setNext(predecessor);
+		}
+	}
+
 	public void swapNodes(Node<E> x, Node<E> y) {
 		if (x == null || y == null)
 			throw new IllegalArgumentException("LinkedList is empty!");
 		if (x == y)
 			throw new IllegalArgumentException("x and y both refer to same node.");
 
-		class SwapNodes {
-			private Node<E> xPrevNode = head;
-			private Node<E> yPrevNode = head;
-			private Node<E> xNext = x.getNext();
-			private Node<E> yNext = y.getNext();
-
-			public void swapNodes() {
-				findPrevNodes();
-
-				// if (x --> y)
-				if (nodesAdjacent(x, y))
-					swapAdjacentNodes(xPrevNode, x, y);
-				// if (y --> x)
-				else if (nodesAdjacent(y, x))
-					swapAdjacentNodes(yPrevNode, y, x);
-				else
-					swapUnAdjacentNodes();
-
-				updateTail();
-				updateHead();
-			}
-
-			private void findPrevNodes() {
-				Node<E> walkA = head;
-				Node<E> walkB = head;
-
-				// Find prev node of (x).
-				while (walkA != x) {
-					xPrevNode = walkA;
-					walkA = walkA.getNext();
-				}
-				// Find prev node of (y).
-				while (walkB != y) {
-					yPrevNode = walkB;
-					walkB = walkB.getNext();
-				}
-			}
-
-			private boolean nodesAdjacent(Node<E> n1, Node<E> n2) {
-				return n1.getNext() == n2;
-			}
-
-			private void swapUnAdjacentNodes() {
-				xPrevNode.setNext(y);
-				yPrevNode.setNext(x);
-				x.setNext(yNext);
-				y.setNext(xNext);
-			}
-
-			/** Update tail pointer if x or y point to last node. */
-			private void updateTail() {
-				if (tail == y)
-					tail = x;
-				else if (tail == x)
-					tail = y;
-			}
-
-			/** Update head pointer if x or y point to last node. */
-			private void updateHead() {
-				if (head == y)
-					head = x;
-				else if (head == x)
-					head = y;
-			}
-
-			/**
-			 * Swap adjacent nodes with each other.
-			 * Example: If x points to y after swap y will point to x.
-			 * 
-			 * @param prevNode    Previous node of predecessor.
-			 * @param predecessor Predecessor node to be swap with successor.
-			 * @param successor   Successor node to be swap with predecessor.
-			 */
-			private void swapAdjacentNodes(Node<E> prevNode, Node<E> predecessor, Node<E> successor) {
-				prevNode.setNext(successor);
-				predecessor.setNext(successor.getNext());
-				successor.setNext(predecessor);
-			}
-		}
-		new SwapNodes().swapNodes();
+		new SwapNodes(x, y).swapNodes();
 	}
 
 	public static class Node<E> {
