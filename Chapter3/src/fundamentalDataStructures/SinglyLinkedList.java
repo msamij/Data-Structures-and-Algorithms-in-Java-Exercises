@@ -1,5 +1,7 @@
 package fundamentalDataStructures;
 
+import java.util.Stack;
+
 public class SinglyLinkedList<E> implements Cloneable {
 	private Node<E> head = null; // head node of the list (or null if empty)
 	private Node<E> tail = null;// last node of the list (or null if empty)
@@ -79,8 +81,10 @@ public class SinglyLinkedList<E> implements Cloneable {
 	public E secondLast() {
 		if (isEmpty())
 			return null;
+
 		if (size() <= 2)
 			return first();
+
 		int counter = 1;
 		Node<E> walk = head;
 		while (counter < size() - 1) {
@@ -93,11 +97,38 @@ public class SinglyLinkedList<E> implements Cloneable {
 	public void concatenateList(SinglyLinkedList<E> L, SinglyLinkedList<E> M) {
 		if (L.size() == 0 || M.size() == 0)
 			throw new IllegalArgumentException("LinkedLists cannot be empty!");
+
 		head = L.getHead(); // point head to first linkedlist head.
 		tail = L.getTail(); // point tail to first linkedlist tail.
 		tail.setNext(M.getHead()); // set tail's next to 2nd linkedlist head. (two lists are now joined)
 		tail = M.getTail(); // set tail to refer to 2nd list tail.
 		size = L.getSize() + M.getSize(); // update list size.
+	}
+
+	public void reverseList() {
+		if (isEmpty())
+			throw new IllegalStateException("Linked list is empty.");
+		if (size() == 1)
+			throw new IllegalStateException("List must contain more than one element.");
+
+		// Push each element into stack starting from head.
+		Node<E> headWalk = head;
+		Stack<Node<E>> stack = new Stack<>();
+		while (headWalk != null) {
+			stack.push(headWalk);
+			headWalk = headWalk.getNext();
+		}
+
+		// Pop each element in reverse order while updating next pointer.
+		Node<E> oldTail = tail;
+		tail = stack.pop();
+		while (!stack.isEmpty()) {
+			Node<E> popNode = stack.pop();
+			tail.setNext(popNode);
+			tail = tail.getNext();
+		}
+		tail.setNext(null);
+		head = oldTail; // Update
 	}
 
 	private class SwapNodes {
@@ -128,13 +159,14 @@ public class SinglyLinkedList<E> implements Cloneable {
 		 */
 		public void swapNodes() {
 			findPrevNodes();
+
 			// if (x --> y)
 			if (nodesAdjacent(xNode, yNode)) {
 				swapAdjacentNodes(xPrevNode, xNode, yNode);
 			}
 			// if (y --> x)
-			else if (nodesAdjacent(this.yNode, this.xNode)) {
-				swapAdjacentNodes(yPrevNode, this.yNode, this.xNode);
+			else if (nodesAdjacent(yNode, xNode)) {
+				swapAdjacentNodes(yPrevNode, yNode, xNode);
 			} else {
 				swapUnAdjacentNodes();
 			}
@@ -148,12 +180,12 @@ public class SinglyLinkedList<E> implements Cloneable {
 			Node<E> walkB = head;
 
 			// Find prev node of (x).
-			while (walkA != this.xNode) {
+			while (walkA != xNode) {
 				xPrevNode = walkA;
 				walkA = walkA.getNext();
 			}
 			// Find prev node of (y).
-			while (walkB != this.yNode) {
+			while (walkB != yNode) {
 				yPrevNode = walkB;
 				walkB = walkB.getNext();
 			}
@@ -183,8 +215,9 @@ public class SinglyLinkedList<E> implements Cloneable {
 		private void updateHead() {
 			if (head == yNode) {
 				head = xNode;
-			} else if (head == xNode)
+			} else if (head == xNode) {
 				head = yNode;
+			}
 		}
 
 		/**
@@ -209,28 +242,6 @@ public class SinglyLinkedList<E> implements Cloneable {
 			throw new IllegalArgumentException("x and y both refer to same node.");
 
 		new SwapNodes(x, y).swapNodes();
-	}
-
-	public static class Node<E> {
-		private E element; // reference to the element stored at this node
-		private Node<E> next; // reference to the subsequent node in the list
-
-		public Node(E e, Node<E> n) {
-			element = e;
-			next = n;
-		}
-
-		public E getElement() {
-			return element;
-		}
-
-		public Node<E> getNext() {
-			return next;
-		}
-
-		public void setNext(Node<E> n) {
-			next = n;
-		}
 	}
 
 	@Override
@@ -295,6 +306,28 @@ public class SinglyLinkedList<E> implements Cloneable {
 			}
 		}
 		return other;
+	}
+
+	public static class Node<E> {
+		private E element; // reference to the element stored at this node
+		private Node<E> next; // reference to the subsequent node in the list
+
+		public Node(E e, Node<E> n) {
+			element = e;
+			next = n;
+		}
+
+		public E getElement() {
+			return element;
+		}
+
+		public Node<E> getNext() {
+			return next;
+		}
+
+		public void setNext(Node<E> n) {
+			next = n;
+		}
 	}
 
 	public Node<E> getHead() {

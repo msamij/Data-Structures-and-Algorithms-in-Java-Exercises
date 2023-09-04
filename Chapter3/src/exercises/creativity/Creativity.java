@@ -280,10 +280,14 @@ public class Creativity {
 		M.addFirst(4);
 		M.addLast(5);
 		M.addLast(6);
+
 		SinglyLinkedList<Integer> concatenateLinkedList = new SinglyLinkedList<>();
 		concatenateLinkedList.concatenateList(L, M);
-		System.out.println(concatenateLinkedList.first());
-		System.out.println(concatenateLinkedList.last());
+
+		while (L.getHead() != null) {
+			System.out.println(L.getHead().getElement());
+			L.setHead(L.getHead().getNext());
+		}
 	}
 
 	/**
@@ -300,10 +304,9 @@ public class Creativity {
 		M.addFirst(4);
 		M.addLast(5);
 		M.addLast(6);
-		DoublyLinkedList<Integer> concatenateDoublyLinkedList = new DoublyLinkedList<>();
-		concatenateDoublyLinkedList.concatenateLinkedList(L, M);
-		System.out.println(concatenateDoublyLinkedList.first());
-		System.out.println(concatenateDoublyLinkedList.last());
+		DoublyLinkedList<Integer> concatenateList = new DoublyLinkedList<>();
+		concatenateList.concatenateLinkedList(L, M);
+
 	}
 
 	/**
@@ -319,11 +322,47 @@ public class Creativity {
 		L.addLast(3);
 		L.addLast(4);
 
+		// Clearly the algorithm for swapping nodes in singly linkedlist takes more time
+		// than of doubly linkedlist as we have to traverse the list to find parent node
+		// for x and y. Which in worse case would be O(n).
 		L.swapNodes(L.getTail(), L.getHead());
 
+		DoublyLinkedList<Integer> M = new DoublyLinkedList<>();
+		M.addFirst(1);
+		M.addLast(2);
+		M.addLast(3);
+		M.addLast(4);
+
+		M.swapNodes(M.getHeader().getNext(), M.getTrailer().getPrev());
+
+		System.out.println(M.getHeader().getNext().getElement());
+		System.out.println(M.getTrailer().getPrev().getElement());
+	}
+
+	/**
+	 * C-3.28 Describe in detail an algorithm for reversing a singly linked list L
+	 * using only a constant amount of additional space.
+	 */
+	public static void creativity12() {
+		SinglyLinkedList<Integer> L = new SinglyLinkedList<>();
+		L.addFirst(1);
+		L.addLast(2);
+		L.addLast(3);
+		L.addLast(4);
+
+		L.reverseList();
 		while (L.getHead() != null) {
 			System.out.println(L.getHead().getElement());
 			L.setHead(L.getHead().getNext());
 		}
+	}
+
+	/**
+	 * C-3.29 Suppose you are given two circularly linked lists, L and M. Describe
+	 * an algorithm for telling if L and M store the same sequence of elements (but
+	 * perhaps with different starting points).
+	 */
+	public static void creativity13() {
+		//
 	}
 }

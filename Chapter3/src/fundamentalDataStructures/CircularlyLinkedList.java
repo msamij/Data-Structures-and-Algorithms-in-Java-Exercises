@@ -73,6 +73,10 @@ public class CircularlyLinkedList<E> {
 		return head.getElement();
 	}
 
+	public boolean isSequenceSame(CircularlyLinkedList<E> M) {
+		return false;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == null)

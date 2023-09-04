@@ -47,6 +47,74 @@ public class DoublyLinkedList<E> {
 		size = L.getSize() + M.getSize();
 	}
 
+	public void swapNodes(Node<E> x, Node<E> y) {
+		if (header.getNext() == trailer)
+			throw new IllegalArgumentException("List is empty!");
+
+		if (header.getNext() == trailer.getPrev())
+			throw new IllegalArgumentException("List size must be > 1.");
+
+		// TODO:
+		// Refactor this method.
+
+		// Adjacent nodes.
+		// x -->
+		if (x.getNext() == y) {
+			System.out.println(x);
+			// Find prev of x.
+			Node<E> xPrevNode = x.getPrev();
+			// Find next of y.
+			Node<E> yNextNode = y.getNext();
+			// point y's prev to xPrev.
+			y.setPrev(xPrevNode);
+			// Point xPrevNext to y.
+			xPrevNode.setNext(y);
+			// Point y's next to x.
+			y.setNext(x);
+			// Point x' prev to y.
+			x.setPrev(y);
+			// Point x's next to yNext.
+			x.setNext(yNextNode);
+			// Point yNext prev to x.
+			yNextNode.setPrev(x);
+		}
+		// y -->
+		else if (y.getNext() == x) {
+			// Find prev of x.
+			Node<E> xPrevNode = y.getPrev();
+			// Find next of y.
+			Node<E> yNextNode = x.getNext();
+			// point y's prev to xPrev.
+			y.setPrev(xPrevNode);
+			// Point xPrevNext to y.
+			xPrevNode.setNext(y);
+			// Point y's next to x.
+			y.setNext(x);
+			// Point x' prev to y.
+			x.setPrev(y);
+			// Point x's next to yNext.
+			x.setNext(yNextNode);
+			// Point yNext prev to x.
+			yNextNode.setPrev(x);
+		}
+
+		// Unadjacent nodes.
+		Node<E> xPrevNode = x.getPrev();
+		Node<E> yPrevNode = y.getPrev();
+		Node<E> xNextNode = x.getNext();
+		Node<E> yNextNode = y.getNext();
+
+		xPrevNode.setNext(y);
+		y.setPrev(xPrevNode);
+		y.setNext(xNextNode);
+		xNextNode.setPrev(y);
+
+		yPrevNode.setNext(x);
+		x.setPrev(yPrevNode);
+		x.setNext(yNextNode);
+		yNextNode.setPrev(x);
+	}
+
 	public boolean isEmpty() {
 		return size == 0;
 	}
@@ -149,7 +217,7 @@ public class DoublyLinkedList<E> {
 		return true;
 	}
 
-	private static class Node<E> {
+	public static class Node<E> {
 		private E element; // reference to the element stored at this node.
 		private Node<E> prev; // reference to the previous node in the list.
 		private Node<E> next; // reference to the subsequent node in the list.
@@ -191,5 +259,17 @@ public class DoublyLinkedList<E> {
 
 	public int getSize() {
 		return size;
+	}
+
+	public void setHeader(Node<E> header) {
+		this.header = header;
+	}
+
+	public void setTrailer(Node<E> trailer) {
+		this.trailer = trailer;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
 	}
 }
