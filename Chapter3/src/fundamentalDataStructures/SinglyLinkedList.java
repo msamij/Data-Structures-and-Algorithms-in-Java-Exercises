@@ -17,7 +17,7 @@ public class SinglyLinkedList<E> implements Cloneable {
 	public int sizeWithNoInstanceSizeVariable() {
 		if (head == null)
 			return 0;
-		int size = 1; // Assume we atleast have one element.
+		int size = 1; // Assume we have atleast one element.
 		while (head.getNext() != null) {
 			head = head.getNext();
 			size++;
@@ -109,9 +109,32 @@ public class SinglyLinkedList<E> implements Cloneable {
 		if (isEmpty())
 			throw new IllegalStateException("Linked list is empty.");
 		if (size() == 1)
-			throw new IllegalStateException("List must contain more than one element.");
+			throw new IllegalStateException("Linked list must contain more than one element.");
 
-		// Push each element into stack starting from head.
+		Node<E> prev = null, current = head, next = null;
+
+		while (current != null) {
+			next = current.getNext();
+			current.setNext(prev);
+			prev = current;
+			current = next;
+		}
+
+		swapHeadAndTailReferences();
+	}
+
+	private void swapHeadAndTailReferences() {
+		Node<E> oldTail = tail;
+		tail = head;
+		head = oldTail;
+	}
+
+	/**
+	 * Reverse linked list using stack.
+	 * <p/>
+	 * Uses O(N) space time.
+	 */
+	public void reverseListUsingStack() {
 		Node<E> headWalk = head;
 		Stack<Node<E>> stack = new Stack<>();
 		while (headWalk != null) {
@@ -119,7 +142,6 @@ public class SinglyLinkedList<E> implements Cloneable {
 			headWalk = headWalk.getNext();
 		}
 
-		// Pop each element in reverse order while updating next pointer.
 		Node<E> oldTail = tail;
 		tail = stack.pop();
 		while (!stack.isEmpty()) {
@@ -128,7 +150,7 @@ public class SinglyLinkedList<E> implements Cloneable {
 			tail = tail.getNext();
 		}
 		tail.setNext(null);
-		head = oldTail; // Update
+		head = oldTail;
 	}
 
 	private class SwapNodes {

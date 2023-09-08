@@ -1,5 +1,8 @@
 package fundamentalDataStructures;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class CircularlyLinkedList<E> {
 	private Node<E> tail = null;// we store tail (but not head)// last node of the list (or null if empty)
 	private int size = 0; // number of nodes in the list
@@ -74,6 +77,42 @@ public class CircularlyLinkedList<E> {
 	}
 
 	public boolean isSequenceSame(CircularlyLinkedList<E> M) {
+		if (isEmpty() || M.isEmpty())
+			throw new IllegalArgumentException("Lists are empty.");
+
+		Node<E> headNodeOfLargerList = null;
+		Node<E> tailNodeOfLargerList = null;
+		Node<E> headNodeOfSmallerList = null;
+
+		// Setup head and tail nodes of larger lists for traversal.
+		if (size() > M.size()) {
+			headNodeOfLargerList = this.tail.getNext();
+			tailNodeOfLargerList = this.tail;
+			headNodeOfSmallerList = M.tail.getNext();
+		} else {
+			headNodeOfLargerList = M.tail.getNext();
+			tailNodeOfLargerList = M.tail;
+			headNodeOfSmallerList = this.tail.getNext();
+		}
+
+		Set<E> setL = new HashSet<>();
+		Set<E> setM = new HashSet<>();
+
+		// Traverse list until headNode of larger list reaches tail, This way we
+		// would've traversed smaller list too.
+		while (headNodeOfLargerList != tailNodeOfLargerList) {
+			setL.add(headNodeOfLargerList.getElement());
+			setM.add(headNodeOfSmallerList.getElement());
+
+			headNodeOfLargerList = headNodeOfLargerList.getNext();
+			headNodeOfSmallerList = headNodeOfSmallerList.getNext();
+		}
+
+		// Finally add last node of larger list to set.
+		setL.add(tailNodeOfLargerList.getElement());
+
+		if (setL.containsAll(setM))
+			return true;
 		return false;
 	}
 

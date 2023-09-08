@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
 
+import fundamentalDataStructures.CircularlyLinkedList;
 import fundamentalDataStructures.DoublyLinkedList;
 import fundamentalDataStructures.SinglyLinkedList;
 import utilityClasses.GameEntry;
@@ -17,15 +18,8 @@ public class Creativity {
 	}
 
 	private static class ArrayNotSupportedException extends Exception {
-		private final String message;
-
 		public ArrayNotSupportedException(String message) {
-			this.message = message;
-		}
-
-		@Override
-		public String toString() {
-			return message;
+			super(message);
 		}
 	}
 
@@ -363,6 +357,31 @@ public class Creativity {
 	 * perhaps with different starting points).
 	 */
 	public static void creativity13() {
-		//
+		CircularlyLinkedList<Integer> L = new CircularlyLinkedList<>();
+		CircularlyLinkedList<Integer> M = new CircularlyLinkedList<>();
+		L.addFirst(1);
+		L.addLast(2);
+		L.addLast(3);
+
+		M.addFirst(3);
+		M.addLast(2);
+		M.addLast(1);
+		M.addFirst(4);
+
+		System.out.println(L.isSequenceSame(M));
+	}
+
+	/**
+	 * C-3.31 Our implementation of a doubly linked list relies on two sentinel
+	 * nodes, header and trailer, but a single sentinel node that guards both ends
+	 * of the list should suffice. Reimplement the DoublyLinkedList class using only
+	 * one sentinel node.
+	 */
+	public static void creativity14() {
+		var sDL = new SingleSentinalDoublyLinkedList<Integer>();
+		sDL.addFirst(1);
+		sDL.addLast(2);
+		sDL.addLast(3);
+		sDL.addFirst(0);
 	}
 }

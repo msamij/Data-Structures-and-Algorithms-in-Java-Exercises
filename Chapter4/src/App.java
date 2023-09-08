@@ -7,9 +7,9 @@ public class App {
     static void experimentalStudies() {
         long startTime = System.currentTimeMillis();
 
-        String answer1 = repeat1('*', 100_000);
+        repeat1('*', 100_000);
 
-        String answer2 = repeat2('*', 100_000); // runs much faster.
+        repeat2('*', 100_000); // runs much faster.
 
         long endTime = System.currentTimeMillis();
         long elapsed = endTime - startTime;
@@ -278,6 +278,125 @@ public class App {
     }
 
     static void prefixAverages() {
-        /** */
+        /**
+         * The next problem we consider is computing what are known as prefix averages
+         * of a sequence of numbers. Namely, given a sequence x consisting of n numbers,
+         * we want to compute a sequence a such that aj is the average of elements
+         * x0, . . . , xj , for j = 0, . . . , n − 1.
+         * 
+         * Our first algorithm for computing prefix averages, denoted as prefixAverage1,
+         * is shown in Code. It computes each element a j independently, using an inner
+         * loop to compute that partial sum.
+         */
+
+        class PrefixAlgorithm {
+            /**
+             * 
+             * Quadratic Apporach:
+             * 
+             * <p/>
+             * Returns an array a such that, for all j, a[j] equals the average of
+             * x[0], ..., x[j].
+             * <p/>
+             * Let us analyze the prefixAverage1 algorithm:
+             * 
+             * <p/>
+             * The initialization of n = x.length and the eventual return of a reference to
+             * array a at both execute in O(1) time.
+             * 
+             * <p/>
+             * Creating and initializing the new array, can be done with in O(n) time, using
+             * a constant number of primitive operations per element.
+             * 
+             * <p/>
+             * There are two nested for loops, which are controlled, respectively, by
+             * counters j and i. The body of the outer loop, controlled by counter j, is
+             * executed n times, for j = 0, . . . , n − 1. Therefore, statements total = 0
+             * and a[j] = total / (j+1) are executed n times each. This implies that these
+             * two statements, plus the management of counter j in the loop, contribute a
+             * number of primitive operations proportional to n, that is, O(n) time.
+             * 
+             * <p/>
+             * The body of the inner loop, which is controlled by counter i, is
+             * executed j + 1 times, depending on the current value of the outer loop
+             * counter j. Thus, statement total += x[i], in the inner loop, is executed
+             * 1 + 2 + 3 + · · · + n times. we know that 1 + 2 + 3 + · · · + n = n(n +1)/2
+             * which implies that the statement in the inner loop contributes O(n^2) time. A
+             * similar argument can be done for the primitive operations associated with
+             * maintaining counter i, which also take O(n^2) time.
+             * 
+             * <p/>
+             * The running time of implementation prefixAverage1 is given by the sum of
+             * these terms. The first term is O(1), the second and third terms are O(n), and
+             * the fourth term is O(n^2), hence the running time of prefixAverage1 is
+             * O(n^2).
+             */
+            static double[] prefixAverage1(double[] x) {
+                int n = x.length;
+                double[] a = new double[n];
+                for (int j = 0; j < n; j++) {
+                    double total = 0;
+                    for (int i = 0; i <= j; i++) {
+                        total += x[i];
+                    }
+                    a[j] = total / (j + 1);
+                }
+                return a;
+            }
+
+            /**
+             * A Linear-Time Algorithm
+             * 
+             * <p/>
+             * An intermediate value in the computation of the prefix average is the prefix
+             * sum x0 + x1 + · · · + xj , denoted as total in our first implementation, this
+             * allows us to compute the prefix average a[j] = total / (j + 1). In our first
+             * algorithm, the prefix sum is computed anew for each value of j. That
+             * contributed O(j) time for each j, leading to the quadratic behavior. For
+             * greater efficiency, we can maintain the current prefix sum dynamically,
+             * effectively computing x0 + x 1 + · · · + xj as total + xj , where value
+             * total is equal to the sum x0 + x 1 + · · ·+ xj−1 , when computed by the
+             * previous pass of the loop over j. code provides a new implementation, denoted
+             * as prefixAverage2, using this approach.
+             * 
+             * <p/>
+             * The analysis of the running time of algorithm prefixAverage2 follows:
+             * 
+             * <p/>
+             * Initializing variables n and total uses O(1) time.
+             * 
+             * <p/>
+             * Initializing the array a uses O(n) time.
+             * 
+             * <p/>
+             * There is a single for loop, which is controlled by counter j. The
+             * maintenance of that loop contributes a total of O(n) time.
+             * 
+             * <p/>
+             * The body of the loop is executed n times, for j = 0, . . . , n − 1. Thus,
+             * statements total += x[j] and a[j] = total / (j+1) are executed n times each.
+             * Since each of these statements uses O(1) time per iteration, their overall
+             * contribution is O(n) time.
+             * 
+             * <p/>
+             * The eventual return of a reference to array A uses O(1) time.
+             * 
+             * <p/>
+             * The running time of algorithm prefixAverage2 is given by the sum of the five
+             * terms. The first and last are O(1) and the remaining three are O(n). And
+             * hence, the running time of prefixAverage2 is O(n), which is much better than
+             * the quadratic time of algorithm prefixAverage1.
+             */
+            static double[] prefixAverage2(double[] x) {
+                int n = x.length;
+                double[] a = new double[n];
+                double total = 0;
+                for (int j = 0; j < n; j++) {
+                    total += x[j];
+                    a[j] = total / (j + 1);
+                }
+                return a;
+            }
+        }
     }
 }
