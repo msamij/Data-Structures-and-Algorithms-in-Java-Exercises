@@ -8,7 +8,7 @@ public class CircularlyLinkedList<E> {
 	private int size = 0; // number of nodes in the list
 
 	public CircularlyLinkedList() {
-	} // constructs an initially empty list
+	}
 
 	public int size() {
 		return size;
@@ -80,11 +80,16 @@ public class CircularlyLinkedList<E> {
 		if (isEmpty() || M.isEmpty())
 			throw new IllegalArgumentException("Lists are empty.");
 
+		Set<E> setL = new HashSet<>();
+		Set<E> setM = new HashSet<>();
+
 		Node<E> headNodeOfLargerList = null;
 		Node<E> tailNodeOfLargerList = null;
 		Node<E> headNodeOfSmallerList = null;
 
-		// Setup head and tail nodes of larger lists for traversal.
+		// We find head and tail of a list which is greater in size.
+		// This way we could traverse both lists in one go if one is > than other and
+		// add all elements to set.
 		if (size() > M.size()) {
 			headNodeOfLargerList = this.tail.getNext();
 			tailNodeOfLargerList = this.tail;
@@ -94,9 +99,6 @@ public class CircularlyLinkedList<E> {
 			tailNodeOfLargerList = M.tail;
 			headNodeOfSmallerList = this.tail.getNext();
 		}
-
-		Set<E> setL = new HashSet<>();
-		Set<E> setM = new HashSet<>();
 
 		// Traverse list until headNode of larger list reaches tail, This way we
 		// would've traversed smaller list too.
@@ -111,9 +113,7 @@ public class CircularlyLinkedList<E> {
 		// Finally add last node of larger list to set.
 		setL.add(tailNodeOfLargerList.getElement());
 
-		if (setL.containsAll(setM))
-			return true;
-		return false;
+		return setL.containsAll(setM);
 	}
 
 	@Override
@@ -138,9 +138,9 @@ public class CircularlyLinkedList<E> {
 		return true;
 	}
 
-	private static class Node<E> {
-		private E element; // reference to the element stored at this node
-		private Node<E> next; // reference to the subsequent node in the list
+	private static final class Node<E> {
+		private E element;
+		private Node<E> next;
 
 		public Node(E e, Node<E> n) {
 			element = e;
@@ -158,5 +158,13 @@ public class CircularlyLinkedList<E> {
 		public void setNext(Node<E> n) {
 			next = n;
 		}
+	}
+
+	public Node<E> getTail() {
+		return tail;
+	}
+
+	public int getSize() {
+		return size;
 	}
 }

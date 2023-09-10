@@ -394,8 +394,10 @@ public class Creativity {
 	 */
 	public static void creativity15() {
 		var cDL = new CircularlyDoublyLinkedList<Integer>();
-		cDL.addFirst(0);
-		cDL.addLast(1);
+		cDL.addFirst(1);
 		cDL.addLast(2);
+		cDL.addLast(3);
+		cDL.addLast(4);
+		cDL.printList();
 	}
 }

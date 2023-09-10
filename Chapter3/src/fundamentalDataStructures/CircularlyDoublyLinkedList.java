@@ -73,7 +73,7 @@ public class CircularlyDoublyLinkedList<E> {
 			return null;
 		Node<E> node = lastNode();
 		remove(node.getPrev(), node.getNext());
-		tail = node.getPrev();
+		tail = node.getPrev(); // since we're essentially removing last node tail pointer must be updated.
 		return node.getElement();
 	}
 
@@ -107,9 +107,13 @@ public class CircularlyDoublyLinkedList<E> {
 	}
 
 	public void rotate() {
+		if (tail != null)
+			tail = tail.getNext();
 	}
 
 	public void rotateBackwards() {
+		if (tail != null)
+			tail = tail.getPrev();
 	}
 
 	private static final class Node<E> {
