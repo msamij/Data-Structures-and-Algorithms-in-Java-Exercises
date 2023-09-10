@@ -1,4 +1,4 @@
-package exercises.creativity;
+package fundamentalDataStructures;
 
 /**
  * An Implementation of DoublyLinkedList class using only single sentinal node.

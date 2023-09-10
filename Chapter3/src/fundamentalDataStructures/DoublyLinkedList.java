@@ -54,13 +54,11 @@ public class DoublyLinkedList<E> {
 		if (header.getNext() == trailer.getPrev())
 			throw new IllegalArgumentException("List size must be > 1.");
 
-		// TODO:
 		// Refactor this method.
 
 		// Adjacent nodes.
 		// x -->
 		if (x.getNext() == y) {
-			System.out.println(x);
 			// Find prev of x.
 			Node<E> xPrevNode = x.getPrev();
 			// Find next of y.

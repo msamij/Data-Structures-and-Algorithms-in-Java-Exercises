@@ -6,8 +6,10 @@ import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
 
+import fundamentalDataStructures.CircularlyDoublyLinkedList;
 import fundamentalDataStructures.CircularlyLinkedList;
 import fundamentalDataStructures.DoublyLinkedList;
+import fundamentalDataStructures.SingleSentinalDoublyLinkedList;
 import fundamentalDataStructures.SinglyLinkedList;
 import utilityClasses.GameEntry;
 import utilityClasses.ScoreBoard;
@@ -383,5 +385,17 @@ public class Creativity {
 		sDL.addLast(2);
 		sDL.addLast(3);
 		sDL.addFirst(0);
+	}
+
+	/**
+	 * C-3.32 Implement a circular version of a doubly linked list, without any
+	 * sentinels, that supports all the public behaviors of the original as well as
+	 * two new update methods, rotate() and rotateBackward().
+	 */
+	public static void creativity15() {
+		var cDL = new CircularlyDoublyLinkedList<Integer>();
+		cDL.addFirst(0);
+		cDL.addLast(1);
+		cDL.addLast(2);
 	}
 }
