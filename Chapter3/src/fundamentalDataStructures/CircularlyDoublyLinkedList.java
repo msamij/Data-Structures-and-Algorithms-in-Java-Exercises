@@ -65,13 +65,6 @@ public class CircularlyDoublyLinkedList<E> {
 		Node<E> node = firstNode();
 		remove(tail, node.getNext());
 		return node.getElement();
-		// if (node == tail)
-		// tail = null;
-		// else {
-		// tail.setNext(node.getNext());
-		// tail.getNext().setPrev(tail);
-		// }
-		// size--;
 	}
 
 	/** Removes and returns the last element of the list. */
@@ -81,13 +74,6 @@ public class CircularlyDoublyLinkedList<E> {
 		Node<E> node = lastNode();
 		remove(node.getPrev(), node.getNext());
 		tail = node.getPrev();
-		// if (node.getNext() == tail)
-		// tail = null;
-		// else {
-		// node.getPrev().setNext(node.getNext());
-		// tail = node.getPrev();
-		// }
-		// size--;
 		return node.getElement();
 	}
 
