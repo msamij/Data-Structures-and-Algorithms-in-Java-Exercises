@@ -76,44 +76,68 @@ public class CircularlyLinkedList<E> {
 		return head.getElement();
 	}
 
+	/**
+	 * 
+	 * @param M Reference of 2nd list.
+	 * @return true if invoking list contains same sequence as List. <i>M</i>
+	 *         <p>
+	 *         Two Lists contains same sequence if both lists have same elements
+	 *         regardless of their order.
+	 *         <p>
+	 *         Example: L = {1, 2, 3}, M = {1, 3, 2, 4} in this case L contains
+	 *         elements that are also in M, even though M has more elements than L.
+	 */
 	public boolean isSequenceSame(CircularlyLinkedList<E> M) {
 		if (isEmpty() || M.isEmpty())
 			throw new IllegalArgumentException("Lists are empty.");
+		return new SequenceMatch().sequenceSame(M);
+	}
 
-		Set<E> setL = new HashSet<>();
-		Set<E> setM = new HashSet<>();
+	private final class SequenceMatch {
+		private Node<E> headNodeOfLargerList = null;
+		private Node<E> tailNodeOfLargerList = null;
+		private Node<E> headNodeOfSmallerList = null;
 
-		Node<E> headNodeOfLargerList = null;
-		Node<E> tailNodeOfLargerList = null;
-		Node<E> headNodeOfSmallerList = null;
+		private final Set<E> setLarger = new HashSet<>();
+		private final Set<E> setSmaller = new HashSet<>();
 
-		// We find head and tail of a list which is greater in size.
-		// This way we could traverse both lists in one go if one is > than other and
-		// add all elements to set.
-		if (size() > M.size()) {
-			headNodeOfLargerList = this.tail.getNext();
-			tailNodeOfLargerList = this.tail;
-			headNodeOfSmallerList = M.tail.getNext();
-		} else {
-			headNodeOfLargerList = M.tail.getNext();
-			tailNodeOfLargerList = M.tail;
-			headNodeOfSmallerList = this.tail.getNext();
+		public boolean sequenceSame(CircularlyLinkedList<E> M) {
+			return setContainsAnotherSet(M);
 		}
 
-		// Traverse list until headNode of larger list reaches tail, This way we
-		// would've traversed smaller list too.
-		while (headNodeOfLargerList != tailNodeOfLargerList) {
-			setL.add(headNodeOfLargerList.getElement());
-			setM.add(headNodeOfSmallerList.getElement());
-
-			headNodeOfLargerList = headNodeOfLargerList.getNext();
-			headNodeOfSmallerList = headNodeOfSmallerList.getNext();
+		private boolean setContainsAnotherSet(CircularlyLinkedList<E> M) {
+			findLargerAndSmallerNodesForTraversal(M);
+			addListsToSet();
+			return setLarger.containsAll(setSmaller);
 		}
 
-		// Finally add last node of larger list to set.
-		setL.add(tailNodeOfLargerList.getElement());
+		private void findLargerAndSmallerNodesForTraversal(CircularlyLinkedList<E> M) {
+			if (size() > M.size()) {
+				headNodeOfLargerList = tail.getNext();
+				tailNodeOfLargerList = tail;
+				headNodeOfSmallerList = M.tail.getNext();
+			} else {
+				headNodeOfLargerList = M.tail.getNext();
+				tailNodeOfLargerList = M.tail;
+				headNodeOfSmallerList = tail.getNext();
+			}
+		}
 
-		return setL.containsAll(setM);
+		private void addListsToSet() {
+			// Traverse list until headNode of larger list reaches tail, This way we
+			// would've traversed smaller list too.
+			while (headNodeOfLargerList != tailNodeOfLargerList) {
+				setLarger.add(headNodeOfLargerList.getElement());
+				setSmaller.add(headNodeOfSmallerList.getElement());
+
+				headNodeOfLargerList = headNodeOfLargerList.getNext();
+				headNodeOfSmallerList = headNodeOfSmallerList.getNext();
+			}
+			// Finally add last node of larger list to set.(Since loop fill finish before
+			// putting last element to set)
+			setLarger.add(tailNodeOfLargerList.getElement());
+		}
+
 	}
 
 	@Override

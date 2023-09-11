@@ -153,7 +153,7 @@ public class SinglyLinkedList<E> implements Cloneable {
 		head = oldTail;
 	}
 
-	private class SwapNodes {
+	private final class Swap {
 		private Node<E> xPrevNode = head;
 		private Node<E> yPrevNode = head;
 		private Node<E> xNode = null;
@@ -168,7 +168,7 @@ public class SinglyLinkedList<E> implements Cloneable {
 		 * @param y Reference to a node (y) to be replaced with another node (x).
 		 *          (must not be null)
 		 */
-		public SwapNodes(Node<E> x, Node<E> y) {
+		public Swap(Node<E> x, Node<E> y) {
 			xNode = x;
 			yNode = y;
 			xNext = x.getNext();
@@ -263,7 +263,7 @@ public class SinglyLinkedList<E> implements Cloneable {
 		if (x == y)
 			throw new IllegalArgumentException("x and y both refer to same node.");
 
-		new SwapNodes(x, y).swapNodes();
+		new Swap(x, y).swapNodes();
 	}
 
 	@Override

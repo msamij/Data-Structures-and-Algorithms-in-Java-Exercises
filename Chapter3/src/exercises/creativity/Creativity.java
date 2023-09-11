@@ -364,11 +364,11 @@ public class Creativity {
 		L.addFirst(1);
 		L.addLast(2);
 		L.addLast(3);
+		L.addFirst(5);
 
 		M.addFirst(3);
 		M.addLast(2);
 		M.addLast(1);
-		M.addFirst(4);
 
 		System.out.println(L.isSequenceSame(M));
 	}
