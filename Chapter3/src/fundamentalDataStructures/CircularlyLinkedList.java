@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CircularlyLinkedList<E> {
-	private Node<E> tail = null;// we store tail (but not head)// last node of the list (or null if empty)
-	private int size = 0; // number of nodes in the list
+	private Node<E> tail = null;
+	private int size = 0;
 
 	public CircularlyLinkedList() {
 	}
@@ -14,10 +14,14 @@ public class CircularlyLinkedList<E> {
 		return size;
 	}
 
-	public int sizeWithNoInstanceSizeVariable() {
+	/**
+	 * @return size of list without using instance <i>size</i> variable defined in
+	 *         list.
+	 */
+	public int sizeWithoutInstanceSizeVariable() {
 		if (tail == null)
 			return 0;
-		int size = 1; // Assume we atleast have one element.
+		int size = 1; // Assume we have atleast one element.
 		Node<E> head = tail.getNext();
 		while (head != tail) {
 			head = head.getNext();
@@ -42,7 +46,8 @@ public class CircularlyLinkedList<E> {
 		return tail.getElement();
 	}
 
-	public void rotate() { // rotate the first element to the back of the list
+	/** Rotate the first element to the back of the list */
+	public void rotate() {
 		if (tail != null)
 			tail = tail.getNext();
 	}
@@ -162,7 +167,7 @@ public class CircularlyLinkedList<E> {
 		return true;
 	}
 
-	private static final class Node<E> {
+	static class Node<E> {
 		private E element;
 		private Node<E> next;
 
@@ -190,5 +195,13 @@ public class CircularlyLinkedList<E> {
 
 	public int getSize() {
 		return size;
+	}
+
+	public void setTail(Node<E> tail) {
+		this.tail = tail;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
 	}
 }

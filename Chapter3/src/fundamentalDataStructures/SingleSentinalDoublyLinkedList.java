@@ -87,7 +87,7 @@ public class SingleSentinalDoublyLinkedList<E> {
 		size++;
 	}
 
-	private static class Node<E> {
+	private static final class Node<E> {
 		private E element;
 		private Node<E> prev;
 		private Node<E> next;

@@ -9,6 +9,7 @@ import java.util.Stack;
 import fundamentalDataStructures.CircularlyDoublyLinkedList;
 import fundamentalDataStructures.CircularlyLinkedList;
 import fundamentalDataStructures.DoublyLinkedList;
+import fundamentalDataStructures.InheritedCircularlyDoublyLinkedList;
 import fundamentalDataStructures.SingleSentinalDoublyLinkedList;
 import fundamentalDataStructures.SinglyLinkedList;
 import utilityClasses.GameEntry;
@@ -135,26 +136,27 @@ public class Creativity {
 	 * to keep track of the pairs of meeting players and who is the winner.
 	 */
 	public static void creativity7() {
-		class Player {
-			final int playerNo;
-			int meetCount;
+		final class Player {
+			private final int playerNo;
+			private int meetCount;
 
 			Player(int playerNo) {
 				this.playerNo = playerNo;
 				this.meetCount = 0;
 			}
 		}
-		class PlayerPair {
-			final Player player1;
-			final Player player2;
+		final class PlayerPair {
+			private final Player player1;
+			private final Player player2;
 
 			PlayerPair(Player player1, Player player2) {
 				this.player1 = player1;
 				this.player2 = player2;
 			}
 		}
-		class MultiplayerGame {
-			final Player[] players;
+
+		final class MultiplayerGame {
+			private final Player[] players;
 			private final Stack<PlayerPair> playerPairs;
 
 			MultiplayerGame() {
@@ -184,14 +186,17 @@ public class Creativity {
 			void isWinner(int playerNo) {
 				PlayerPair poppedPlayer = playerPairs.pop();
 				if (poppedPlayer.player1.playerNo == playerNo) {
-					if (poppedPlayer.player1.meetCount == players.length - 1)
+					if (poppedPlayer.player1.meetCount == players.length - 1) {
 						System.out.println("Winner is player: " + playerNo);
+					}
 
 				} else if (poppedPlayer.player2.playerNo == playerNo) {
-					if (poppedPlayer.player2.meetCount == players.length - 1)
+					if (poppedPlayer.player2.meetCount == players.length - 1) {
 						System.out.println("Winner is player: " + playerNo);
-				} else
+					}
+				} else {
 					System.out.println("There's a tie!");
+				}
 			}
 
 			private void meet(Player i, Player j) {
@@ -300,9 +305,16 @@ public class Creativity {
 		M.addFirst(4);
 		M.addLast(5);
 		M.addLast(6);
-		DoublyLinkedList<Integer> concatenateList = new DoublyLinkedList<>();
-		concatenateList.concatenateLinkedList(L, M);
 
+		L.printList();
+		System.out.println();
+		M.printList();
+
+		DoublyLinkedList<Integer> concatenatedList = new DoublyLinkedList<>();
+		concatenatedList.concatenateList(L, M);
+
+		System.out.println();
+		concatenatedList.printList();
 	}
 
 	/**
@@ -388,7 +400,7 @@ public class Creativity {
 	}
 
 	/**
-	 * C-3.32 Implement a circular version of a doubly linked list, without any
+	 * C-3.32 Implement a circular version of a doublylinkedlist, without any
 	 * sentinels, that supports all the public behaviors of the original as well as
 	 * two new update methods, rotate() and rotateBackward().
 	 */
@@ -398,6 +410,22 @@ public class Creativity {
 		cDL.addLast(2);
 		cDL.addLast(3);
 		cDL.addLast(4);
+
 		cDL.printList();
+	}
+
+	/**
+	 * C-3.33 Solve the previous problem using inheritance, such that a
+	 * DoublyLinkedList class inherits from the existing CircularlyLinkedList, and
+	 * the DoublyLinkedList.Node nested class inherits from
+	 * CircularlyLinkedList.Node.
+	 */
+	public static void creativity16() {
+		var iCDL = new InheritedCircularlyDoublyLinkedList<Integer>();
+		iCDL.addFirst(1);
+		iCDL.addLast(2);
+		iCDL.addLast(3);
+
+		iCDL.printList();
 	}
 }

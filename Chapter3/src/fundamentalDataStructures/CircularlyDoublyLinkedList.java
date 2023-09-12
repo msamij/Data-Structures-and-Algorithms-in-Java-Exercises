@@ -40,19 +40,43 @@ public class CircularlyDoublyLinkedList<E> {
 		return tail;
 	}
 
-	/** Adds element to the front of the list */
+	/**
+	 * Adds element to the front of the list while also maintaining it's circular
+	 * structure.
+	 * 
+	 * @param e element to be inserted.
+	 */
 	public void addFirst(E e) {
 		if (isEmpty()) {
 			tail = new Node<E>(e, null, null);
-			tail.setNext(tail);
+			addFirst(tail, tail, tail); // First node pointing to itself (from both ends).
 		} else {
 			Node<E> node = new Node<E>(e, tail, tail.getNext());
-			tail.setNext(node);
+			addFirst(tail, node, tail.getNext());
 		}
 		size++;
 	}
 
-	/** Adds element to the end of the list */
+	/**
+	 * Adds a node to front of list also maintaining it's circular structure.
+	 * <p>
+	 * It maintains it circular structure by keeping lastNode next pointer points to
+	 * new node. And firstNode previous pointer points to newNode.
+	 * 
+	 * @param lastNode  <i>(lastNode)</i> present in the list.
+	 * @param node      <i>(node)</i> new node which is to be inserted in the list.
+	 * @param firstNode <i>(firstNode)</i> present in the list.
+	 */
+	private void addFirst(Node<E> lastNode, Node<E> node, Node<E> firstNode) {
+		lastNode.setNext(node);
+		firstNode.setPrev(node);
+	}
+
+	/**
+	 * Adds element to the end of the list also maintaining it's circular structure.
+	 * 
+	 * @param e element to be inserted.
+	 */
 	public void addLast(E e) {
 		addFirst(e);
 		tail = tail.getNext();
@@ -102,6 +126,15 @@ public class CircularlyDoublyLinkedList<E> {
 		while (counter <= size) {
 			System.out.println(tail.getNext().getElement());
 			tail = tail.getNext();
+			counter++;
+		}
+	}
+
+	public void printListReverse() {
+		int counter = 1;
+		while (counter <= size) {
+			System.out.println(tail.getElement());
+			tail = tail.getPrev();
 			counter++;
 		}
 	}

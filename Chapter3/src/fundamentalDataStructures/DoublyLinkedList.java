@@ -1,8 +1,15 @@
 package fundamentalDataStructures;
 
+/**
+ * DoublyLinkedList class implementation containing header and trailer sentinal
+ * nodes.
+ * <p>
+ * <i>header</i> sentinal is a node in it's own not a pointer containing both
+ * next and previous pointers. Same is the case with <i>trailer</i> sentinal.
+ */
 public class DoublyLinkedList<E> {
-	private Node<E> header; // header sentinel
-	private Node<E> trailer; // trailer sentinel
+	private Node<E> header;
+	private Node<E> trailer;
 	private int size = 0;
 
 	/** Constructs a new empty list. */
@@ -16,6 +23,10 @@ public class DoublyLinkedList<E> {
 		return size;
 	}
 
+	/**
+	 * @return size of list without using instance <i>size</i> variable defined in
+	 *         list.
+	 */
 	public int sizeWithNoInstanceSizeVariable() {
 		if (header.getNext() == trailer)
 			return 0;
@@ -27,24 +38,55 @@ public class DoublyLinkedList<E> {
 		return size;
 	}
 
-	public void concatenateLinkedList(DoublyLinkedList<E> L, DoublyLinkedList<E> M) {
+	/**
+	 * Concatenate two doubly linked lists into a single one.
+	 * 
+	 * @param L list one
+	 * @param M list two
+	 */
+	public void concatenateList(DoublyLinkedList<E> L, DoublyLinkedList<E> M) {
 		if (L.size() == 0 || M.size() == 0)
-			throw new IllegalArgumentException("LinkedLists cannot be empty");
+			throw new IllegalArgumentException("One of the two list is empty");
+		if (L == M)
+			throw new IllegalArgumentException("Both lists refer to the same underlying list.");
+
 		header = L.getHeader();
 		trailer = L.getTrailer();
+
 		Node<E> firstNodeOfSecondList = M.getHeader().getNext();
 		Node<E> lastNodeOfSecondList = M.getTrailer().getPrev();
+		Node<E> lastNodeOfFirstList = L.getTrailer().getPrev();
 
-		// Set next pointer of last node of (1st list) to 1st node of (2nd list).
-		trailer.getPrev().setNext(firstNodeOfSecondList);
-		// Set previous pointer of first node of (2nd list) to last node of (1st list).
-		firstNodeOfSecondList.setPrev(trailer.getPrev());
+		// Last node's next pointer of (first list) points to first node of second list.
+		lastNodeOfFirstList.setNext(firstNodeOfSecondList);
+
+		// First node's previous pointer of (second list) point to last node of first
+		// list.
+		firstNodeOfSecondList.setPrev(lastNodeOfFirstList);
+
 		// Set trailer's previous pointer to last node of (2nd list).
 		trailer.setPrev(lastNodeOfSecondList);
+
 		// Set next pointer of last node to trailer.
-		lastNodeOfSecondList.setNext(lastNodeOfSecondList);
+		lastNodeOfSecondList.setNext(trailer);
 
 		size = L.getSize() + M.getSize();
+	}
+
+	public void printList() {
+		Node<E> walk = header.getNext();
+		while (walk != trailer) {
+			System.out.println(walk.getElement());
+			walk = walk.getNext();
+		}
+	}
+
+	public void printListReverse() {
+		Node<E> walk = trailer.getPrev();
+		while (walk != header) {
+			System.out.println(walk.getElement());
+			walk = walk.getPrev();
+		}
 	}
 
 	public void swapNodes(Node<E> x, Node<E> y) {
@@ -193,6 +235,30 @@ public class DoublyLinkedList<E> {
 		size++;
 	}
 
+	public Node<E> getHeader() {
+		return header;
+	}
+
+	public Node<E> getTrailer() {
+		return trailer;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setHeader(Node<E> header) {
+		this.header = header;
+	}
+
+	public void setTrailer(Node<E> trailer) {
+		this.trailer = trailer;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == null)
@@ -216,9 +282,9 @@ public class DoublyLinkedList<E> {
 	}
 
 	public static final class Node<E> {
-		private E element; // reference to the element stored at this node.
-		private Node<E> prev; // reference to the previous node in the list.
-		private Node<E> next; // reference to the subsequent node in the list.
+		private E element;
+		private Node<E> prev;
+		private Node<E> next;
 
 		public Node(E e, Node<E> p, Node<E> n) {
 			element = e;
@@ -245,29 +311,5 @@ public class DoublyLinkedList<E> {
 		public void setNext(Node<E> n) {
 			next = n;
 		}
-	}
-
-	public Node<E> getHeader() {
-		return header;
-	}
-
-	public Node<E> getTrailer() {
-		return trailer;
-	}
-
-	public int getSize() {
-		return size;
-	}
-
-	public void setHeader(Node<E> header) {
-		this.header = header;
-	}
-
-	public void setTrailer(Node<E> trailer) {
-		this.trailer = trailer;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
 	}
 }

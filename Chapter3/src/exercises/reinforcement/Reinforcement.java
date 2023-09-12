@@ -172,7 +172,7 @@ public final class Reinforcement {
 		circularlyLinkedList.addLast(2);
 		circularlyLinkedList.addFirst(0);
 		circularlyLinkedList.addLast(3);
-		System.out.println(circularlyLinkedList.sizeWithNoInstanceSizeVariable());
+		System.out.println(circularlyLinkedList.sizeWithoutInstanceSizeVariable());
 	}
 
 	/**
