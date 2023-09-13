@@ -1,7 +1,5 @@
 package fundamentalDataStructures;
 
-import fundamentalDataStructures.util.SwapListNodes;
-
 /**
  * DoublyLinkedList class implementation containing header and trailer sentinal
  * nodes.
@@ -14,7 +12,6 @@ public class DoublyLinkedList<E> {
 	private Node<E> trailer;
 	private int size = 0;
 
-	/** Constructs a new empty list. */
 	public DoublyLinkedList() {
 		header = new Node<>(null, null, null);
 		trailer = new Node<>(null, header, null); // trailer is preceded by header
@@ -92,6 +89,9 @@ public class DoublyLinkedList<E> {
 	}
 
 	public void swapNodes(Node<E> x, Node<E> y) {
+		if (x == null || y == null)
+			throw new NullPointerException("Parameter nodes cannot be null.");
+
 		if (header.getNext() == trailer)
 			throw new IllegalArgumentException("List is empty!");
 
@@ -101,125 +101,7 @@ public class DoublyLinkedList<E> {
 		if (x == y)
 			throw new IllegalArgumentException("Both parameters refers to same node.");
 
-		if (x == null || y == null)
-			throw new NullPointerException("Parameters nodes cannot be null.");
-
 		new SwapDoublyLinkedList<>(x, y).swapNodes();
-		// Refactor this method.
-
-		// Adjacent nodes.
-		// x -->
-		// if (x.getNext() == y) {
-		// Node<E> xPrevNode = x.getPrev();
-		// Node<E> yNextNode = y.getNext();
-		// y.setPrev(xPrevNode);
-		// xPrevNode.setNext(y);
-		// y.setNext(x);
-		// x.setPrev(y);
-		// x.setNext(yNextNode);
-		// yNextNode.setPrev(x);
-		// }
-		// // y -->
-		// else if (y.getNext() == x) {
-		// Node<E> yPrevNode = y.getPrev();
-		// Node<E> xNextNode = x.getNext();
-		// x.setPrev(yPrevNode);
-		// yPrevNode.setNext(x);
-		// x.setNext(y);
-		// y.setPrev(x);
-		// y.setNext(xNextNode);
-		// xNextNode.setPrev(y);
-		// } else {
-		// // Unadjacent nodes.
-		// Node<E> xPrevNode = x.getPrev();
-		// Node<E> yPrevNode = y.getPrev();
-		// Node<E> xNextNode = x.getNext();
-		// Node<E> yNextNode = y.getNext();
-
-		// xPrevNode.setNext(y);
-		// y.setPrev(xPrevNode);
-		// y.setNext(xNextNode);
-		// xNextNode.setPrev(y);
-
-		// yPrevNode.setNext(x);
-		// x.setPrev(yPrevNode);
-		// x.setNext(yNextNode);
-		// yNextNode.setPrev(x);
-		// }
-	}
-
-	private static final class SwapDoublyLinkedList<E> {
-		private Node<E> firstNode = null;
-		private Node<E> secondNode = null;
-
-		private Node<E> firstNodeNextPointer = null;
-		private Node<E> firstNodePrevPointer = null;
-
-		private Node<E> secondNodeNextPointer = null;
-		private Node<E> secondNodePrevPointer = null;
-
-		public SwapDoublyLinkedList(Node<E> firstNode, Node<E> secondNode) {
-			this.firstNode = firstNode;
-			this.secondNode = secondNode;
-			this.firstNodeNextPointer = firstNode.getNext();
-			this.secondNodeNextPointer = secondNode.getNext();
-			this.firstNodePrevPointer = firstNode.getPrev();
-			this.secondNodePrevPointer = secondNode.getPrev();
-		}
-
-		public void swapNodes() {
-			if (nodesAdjacent(firstNode, secondNode)) {
-				swapAdjacentNodes(firstNodePrevPointer, firstNode, secondNode, secondNodeNextPointer);
-			} else if (nodesAdjacent(secondNode, firstNode)) {
-				swapAdjacentNodes(secondNodePrevPointer, secondNode, firstNode, firstNodeNextPointer);
-			} else {
-				swapUnAdjacentNodes();
-			}
-		}
-
-		private boolean nodesAdjacent(Node<E> n1, Node<E> n2) {
-			return n1.getNext() == n2;
-		}
-
-		/**
-		 * 
-		 * @param firstNodePredecessor
-		 * @param firstNode
-		 * @param secondNode
-		 * @param secondNodeSuccessor
-		 */
-		private void swapAdjacentNodes(Node<E> firstNodePredecessor, Node<E> firstNode,
-				Node<E> secondNode, Node<E> secondNodeSuccessor) {
-			secondNode.setPrev(firstNodePredecessor);
-			firstNodePredecessor.setNext(secondNode);
-			secondNode.setNext(firstNode);
-			firstNode.setPrev(secondNode);
-			firstNode.setNext(secondNodeSuccessor);
-			secondNodeSuccessor.setPrev(firstNode);
-		}
-
-		private void swapUnAdjacentNodes() {
-			// firstNodePrevPointer.setNext(secondNode);
-			// secondNode.setPrev(firstNodePrevPointer);
-			// secondNode.setNext(firstNodeNextPointer);
-			// firstNodeNextPointer.setPrev(secondNode);
-
-			swapUnAdjacentNodes(secondNode, firstNodePrevPointer, firstNodeNextPointer);
-
-			// secondNodePrevPointer.setNext(firstNode);
-			// firstNode.setPrev(secondNodePrevPointer);
-			// firstNode.setNext(secondNodeNextPointer);
-			// secondNodeNextPointer.setPrev(firstNode);
-
-			swapUnAdjacentNodes(firstNode, secondNodePrevPointer, secondNodeNextPointer);
-		}
-
-		private void swapUnAdjacentNodes(Node<E> newNode, Node<E> nodePrevPointer, Node<E> nodeNextPointer) {
-			nodePrevPointer.setNext(newNode);
-			newNode.setPrev(nodePrevPointer);
-			newNode.setNext(nodeNextPointer);
-			nodeNextPointer.setPrev(newNode);
-		}
 	}
 
 	public boolean isEmpty() {
@@ -300,6 +182,75 @@ public class DoublyLinkedList<E> {
 		predecessor.setNext(newest);
 		successor.setPrev(newest);
 		size++;
+	}
+
+	// Since we're not using any instance variables class can be static.
+	private static final class SwapDoublyLinkedList<E> {
+		private Node<E> firstNode = null;
+		private Node<E> secondNode = null;
+
+		private Node<E> firstNodeNextPointer = null;
+		private Node<E> firstNodePrevPointer = null;
+
+		private Node<E> secondNodeNextPointer = null;
+		private Node<E> secondNodePrevPointer = null;
+
+		public SwapDoublyLinkedList(Node<E> firstNode, Node<E> secondNode) {
+			this.firstNode = firstNode;
+			this.secondNode = secondNode;
+			this.firstNodeNextPointer = firstNode.getNext();
+			this.secondNodeNextPointer = secondNode.getNext();
+			this.firstNodePrevPointer = firstNode.getPrev();
+			this.secondNodePrevPointer = secondNode.getPrev();
+		}
+
+		public void swapNodes() {
+			if (nodesAdjacent(firstNode, secondNode)) {
+				swapAdjacentNodes(firstNodePrevPointer, firstNode, secondNode, secondNodeNextPointer);
+			} else if (nodesAdjacent(secondNode, firstNode)) {
+				swapAdjacentNodes(secondNodePrevPointer, secondNode, firstNode, firstNodeNextPointer);
+			} else {
+				swapUnAdjacentNodes();
+			}
+		}
+
+		private boolean nodesAdjacent(Node<E> n1, Node<E> n2) {
+			return n1.getNext() == n2;
+		}
+
+		/**
+		 * Replace firstNode position in list with second node and vise versa.
+		 * <p/>
+		 * Algorithm works by swapping nodes by their predecessors and succesors
+		 * pointers.
+		 * <p>
+		 * 
+		 * @param firstNodePredecessor
+		 * @param firstNode
+		 * @param secondNode
+		 * @param secondNodeSuccessor
+		 */
+		private void swapAdjacentNodes(Node<E> firstNodePredecessor, Node<E> firstNode,
+				Node<E> secondNode, Node<E> secondNodeSuccessor) {
+			secondNode.setPrev(firstNodePredecessor);
+			firstNodePredecessor.setNext(secondNode);
+			secondNode.setNext(firstNode);
+			firstNode.setPrev(secondNode);
+			firstNode.setNext(secondNodeSuccessor);
+			secondNodeSuccessor.setPrev(firstNode);
+		}
+
+		private void swapUnAdjacentNodes() {
+			swapUnAdjacentNodes(secondNode, firstNodePrevPointer, firstNodeNextPointer);
+			swapUnAdjacentNodes(firstNode, secondNodePrevPointer, secondNodeNextPointer);
+		}
+
+		private void swapUnAdjacentNodes(Node<E> newNode, Node<E> nodePrevPointer, Node<E> nodeNextPointer) {
+			nodePrevPointer.setNext(newNode);
+			newNode.setPrev(nodePrevPointer);
+			newNode.setNext(nodeNextPointer);
+			nodeNextPointer.setPrev(newNode);
+		}
 	}
 
 	public Node<E> getHeader() {

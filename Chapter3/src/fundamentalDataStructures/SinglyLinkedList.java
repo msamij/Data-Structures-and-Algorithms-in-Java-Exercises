@@ -219,12 +219,14 @@ public class SinglyLinkedList<E> implements Cloneable {
 	}
 
 	private final class SwapSinglyLinkedList {
-		private Node<E> xNode = null;
-		private Node<E> yNode = null;
-		private Node<E> xNextNode = null;
-		private Node<E> yNextNode = null;
-		private Node<E> xPrevNode = head;
-		private Node<E> yPrevNode = head;
+		private Node<E> firstNode = null;
+		private Node<E> secondNode = null;
+
+		private Node<E> firstNodeNextPointer = null;
+		private Node<E> secondNodeNextPointer = null;
+
+		private Node<E> firstNodePrevPointer = head;
+		private Node<E> secondNodePrevPointer = head;
 
 		/**
 		 * 
@@ -234,10 +236,10 @@ public class SinglyLinkedList<E> implements Cloneable {
 		 *          (must not be null)
 		 */
 		public SwapSinglyLinkedList(Node<E> x, Node<E> y) {
-			xNode = x;
-			yNode = y;
-			xNextNode = x.getNext();
-			yNextNode = y.getNext();
+			firstNode = x;
+			secondNode = y;
+			firstNodeNextPointer = x.getNext();
+			secondNodeNextPointer = y.getNext();
 		}
 
 		/**
@@ -246,10 +248,11 @@ public class SinglyLinkedList<E> implements Cloneable {
 		 */
 		public void swapNodes() {
 			findPrevNodes();
-			if (nodesAdjacent(xNode, yNode)) {
-				swapAdjacentNodes(xPrevNode, xNode, yNode);
-			} else if (nodesAdjacent(yNode, xNode)) {
-				swapAdjacentNodes(yPrevNode, yNode, xNode);
+
+			if (nodesAdjacent(firstNode, secondNode)) {
+				swapAdjacentNodes(firstNodePrevPointer, firstNode, secondNode);
+			} else if (nodesAdjacent(secondNode, firstNode)) {
+				swapAdjacentNodes(secondNodePrevPointer, secondNode, firstNode);
 			} else {
 				swapUnAdjacentNodes();
 			}
@@ -262,14 +265,14 @@ public class SinglyLinkedList<E> implements Cloneable {
 			Node<E> walkA = head;
 			Node<E> walkB = head;
 
-			// Find prev node of (x).
-			while (walkA != xNode) {
-				xPrevNode = walkA;
+			// Find prev node of (firstNode).
+			while (walkA != firstNode) {
+				firstNodePrevPointer = walkA;
 				walkA = walkA.getNext();
 			}
-			// Find prev node of (y).
-			while (walkB != yNode) {
-				yPrevNode = walkB;
+			// Find prev node of (secondNode).
+			while (walkB != secondNode) {
+				secondNodePrevPointer = walkB;
 				walkB = walkB.getNext();
 			}
 		}
@@ -279,27 +282,27 @@ public class SinglyLinkedList<E> implements Cloneable {
 		}
 
 		private void swapUnAdjacentNodes() {
-			xPrevNode.setNext(yNode);
-			yPrevNode.setNext(xNode);
-			xNode.setNext(yNextNode);
-			yNode.setNext(xNextNode);
+			firstNodePrevPointer.setNext(secondNode);
+			secondNodePrevPointer.setNext(firstNode);
+			firstNode.setNext(secondNodeNextPointer);
+			secondNode.setNext(firstNodeNextPointer);
 		}
 
 		/** Update tail pointer if x or y point to last node. */
 		private void updateTail() {
-			if (tail == yNode) {
-				tail = xNode;
-			} else if (tail == xNode) {
-				tail = yNode;
+			if (tail == secondNode) {
+				tail = firstNode;
+			} else if (tail == firstNode) {
+				tail = secondNode;
 			}
 		}
 
 		/** Update head pointer if x or y point to first node. */
 		private void updateHead() {
-			if (head == yNode) {
-				head = xNode;
-			} else if (head == xNode) {
-				head = yNode;
+			if (head == secondNode) {
+				head = firstNode;
+			} else if (head == firstNode) {
+				head = secondNode;
 			}
 		}
 

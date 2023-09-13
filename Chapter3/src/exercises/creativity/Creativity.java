@@ -329,21 +329,19 @@ public class Creativity {
 		// Clearly the algorithm for swapping nodes in singly linkedlist takes more time
 		// than of doubly linkedlist as we have to traverse the list to find parent node
 		// for x and y. Which in worse case would be O(n).
-		// L.swapNodes(L.getHead().getNext().getNext(), L.getHead());
+
+		L.swapNodes(L.getHead().getNext(), L.getTail());
 
 		DoublyLinkedList<Integer> M = new DoublyLinkedList<>();
 		M.addFirst(1);
 		M.addLast(2);
 		M.addLast(3);
 		M.addLast(4);
+		M.addFirst(0);
 
 		M.printList();
 
 		M.swapNodes(M.getHeader().getNext(), M.getTrailer().getPrev());
-		System.out.println();
-		M.printList();
-		System.out.println();
-		M.printListReverse();
 	}
 
 	/**
