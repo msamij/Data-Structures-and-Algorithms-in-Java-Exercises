@@ -284,11 +284,7 @@ public class Creativity {
 
 		SinglyLinkedList<Integer> concatenateLinkedList = new SinglyLinkedList<>();
 		concatenateLinkedList.concatenateList(L, M);
-
-		while (L.getHead() != null) {
-			System.out.println(L.getHead().getElement());
-			L.setHead(L.getHead().getNext());
-		}
+		concatenateLinkedList.printList();
 	}
 
 	/**
@@ -333,7 +329,7 @@ public class Creativity {
 		// Clearly the algorithm for swapping nodes in singly linkedlist takes more time
 		// than of doubly linkedlist as we have to traverse the list to find parent node
 		// for x and y. Which in worse case would be O(n).
-		L.swapNodes(L.getTail(), L.getHead());
+		// L.swapNodes(L.getHead().getNext().getNext(), L.getHead());
 
 		DoublyLinkedList<Integer> M = new DoublyLinkedList<>();
 		M.addFirst(1);
@@ -341,10 +337,13 @@ public class Creativity {
 		M.addLast(3);
 		M.addLast(4);
 
-		M.swapNodes(M.getHeader().getNext(), M.getTrailer().getPrev());
+		M.printList();
 
-		System.out.println(M.getHeader().getNext().getElement());
-		System.out.println(M.getTrailer().getPrev().getElement());
+		M.swapNodes(M.getHeader().getNext(), M.getTrailer().getPrev());
+		System.out.println();
+		M.printList();
+		System.out.println();
+		M.printListReverse();
 	}
 
 	/**

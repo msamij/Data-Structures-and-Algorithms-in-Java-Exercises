@@ -3,21 +3,21 @@ package fundamentalDataStructures;
 import java.util.Stack;
 
 public class SinglyLinkedList<E> implements Cloneable {
-	private Node<E> head = null; // head node of the list (or null if empty)
-	private Node<E> tail = null;// last node of the list (or null if empty)
-	private int size = 0; // number of nodes in the list
+	private Node<E> head = null;
+	private Node<E> tail = null;
+	private int size = 0;
 
 	public SinglyLinkedList() {
-	} // constructs an initially empty list
-
-	public int size() {
-		return size;
 	}
 
+	/**
+	 * @return size of list without using instance <i>size</i> variable defined in
+	 *         list.
+	 */
 	public int sizeWithNoInstanceSizeVariable() {
 		if (head == null)
 			return 0;
-		int size = 1; // Assume we have atleast one element.
+		int size = 1;
 		while (head.getNext() != null) {
 			head = head.getNext();
 			size++;
@@ -41,35 +41,54 @@ public class SinglyLinkedList<E> implements Cloneable {
 		return tail.getElement();
 	}
 
-	public void addFirst(E e) { // adds element e to the front of the list
+	/**
+	 * Adds element to the front of the list.
+	 * 
+	 * @param e element to be inserted
+	 */
+	public void addFirst(E e) {
 		head = new Node<>(e, head);
-		if (size == 0) // create and link a new node
+		if (size == 0)
 			tail = head; // special case: new node becomes tail also
 		size++;
 	}
 
-	public void addLast(E e) {// adds element e to the end of the list
-		Node<E> newest = new Node<>(e, null); // node will eventually be the tail
-		if (isEmpty())
-			head = newest; // special case: previously empty list
-		else
-			tail.setNext(newest); // new node after existing tail
-		tail = newest; // new node becomes the tail
+	/**
+	 * Adds element to the end of the list.
+	 * 
+	 * @param e element to be inserted
+	 */
+	public void addLast(E e) {
+		Node<E> newest = new Node<>(e, null);
+		if (isEmpty()) {
+			head = newest;
+		} else {
+			tail.setNext(newest);
+		}
+		tail = newest;
 		size++;
 	}
 
+	/** Moves the first element to end of the list. */
 	public void rotate() {
-		if (size() > 1) { // If list contains only a single node, there's point to rotate it.
+		if (getSize() > 1) {
+			// Save previous head.
 			Node<E> prevHead = head;
+			// Move head to next node.
 			head = head.getNext();
+			// Prev head had now moved to last.
 			tail.setNext(prevHead);
+			// Update tail to point to last node.
 			tail = prevHead;
 		}
 	}
 
-	public E removeFirst() { // removes and returns the first element
+	/**
+	 * @return removes and returns the first element
+	 */
+	public E removeFirst() { //
 		if (isEmpty())
-			return null; // nothing to remove
+			return null;
 		E answer = head.getElement();
 		head = head.getNext(); // will become null if list had only one node
 		size--;
@@ -78,25 +97,42 @@ public class SinglyLinkedList<E> implements Cloneable {
 		return answer;
 	}
 
+	/**
+	 * 
+	 * @return second last element in the list, If list size is <= 2 it returns
+	 *         first element.
+	 */
 	public E secondLast() {
 		if (isEmpty())
 			return null;
 
-		if (size() <= 2)
+		if (getSize() <= 2)
 			return first();
 
 		int counter = 1;
 		Node<E> walk = head;
-		while (counter < size() - 1) {
+		while (counter < getSize() - 1) {
 			walk = walk.getNext();
 			counter++;
 		}
 		return walk.getElement();
 	}
 
+	/**
+	 * Concatenate two singlylinkedlist into a single one.
+	 * 
+	 * @param L List one reference.
+	 * @param M Second list reference.
+	 */
 	public void concatenateList(SinglyLinkedList<E> L, SinglyLinkedList<E> M) {
-		if (L.size() == 0 || M.size() == 0)
-			throw new IllegalArgumentException("LinkedLists cannot be empty!");
+		if (L == null || M == null)
+			throw new IllegalArgumentException("List pointers cannot be null");
+
+		if (L.getSize() == 0 || M.getSize() == 0)
+			throw new IllegalArgumentException("One of the two lists is empty!");
+
+		if (L == M)
+			throw new IllegalArgumentException("Both parameters refers to same list.");
 
 		head = L.getHead(); // point head to first linkedlist head.
 		tail = L.getTail(); // point tail to first linkedlist tail.
@@ -105,28 +141,25 @@ public class SinglyLinkedList<E> implements Cloneable {
 		size = L.getSize() + M.getSize(); // update list size.
 	}
 
+	/**
+	 * Reverse list by moving pointers.
+	 * <p>
+	 * Runs in O(N) time and uses O(1) space.
+	 */
 	public void reverseList() {
 		if (isEmpty())
 			throw new IllegalStateException("Linked list is empty.");
-		if (size() == 1)
+		if (getSize() == 1)
 			throw new IllegalStateException("Linked list must contain more than one element.");
 
 		Node<E> prev = null, current = head, next = null;
-
 		while (current != null) {
 			next = current.getNext();
 			current.setNext(prev);
 			prev = current;
 			current = next;
 		}
-
 		swapHeadAndTailReferences();
-	}
-
-	private void swapHeadAndTailReferences() {
-		Node<E> oldTail = tail;
-		tail = head;
-		head = oldTail;
 	}
 
 	/**
@@ -153,13 +186,45 @@ public class SinglyLinkedList<E> implements Cloneable {
 		head = oldTail;
 	}
 
-	private final class Swap {
-		private Node<E> xPrevNode = head;
-		private Node<E> yPrevNode = head;
+	public void printList() {
+		int counter = 1;
+		Node<E> walk = head;
+		while (counter <= getSize()) {
+			System.out.println(walk.getElement());
+			walk = walk.getNext();
+			counter++;
+		}
+	}
+
+	/**
+	 * Swap two nodes in a given singlylinkedlist not just their contents but by
+	 * their position in list.
+	 * 
+	 * @param x x node to be replaced with y.
+	 * @param y y node to be replaced with x.
+	 */
+	public void swapNodes(Node<E> x, Node<E> y) {
+		if (x == null || y == null)
+			throw new IllegalArgumentException("LinkedList is empty!");
+		if (x == y)
+			throw new IllegalArgumentException("x and y both refer to same node.");
+
+		new SwapSinglyLinkedList(x, y).swapNodes();
+	}
+
+	private void swapHeadAndTailReferences() {
+		Node<E> oldTail = tail;
+		tail = head;
+		head = oldTail;
+	}
+
+	private final class SwapSinglyLinkedList {
 		private Node<E> xNode = null;
 		private Node<E> yNode = null;
-		private Node<E> xNext = null;
-		private Node<E> yNext = null;
+		private Node<E> xNextNode = null;
+		private Node<E> yNextNode = null;
+		private Node<E> xPrevNode = head;
+		private Node<E> yPrevNode = head;
 
 		/**
 		 * 
@@ -168,11 +233,11 @@ public class SinglyLinkedList<E> implements Cloneable {
 		 * @param y Reference to a node (y) to be replaced with another node (x).
 		 *          (must not be null)
 		 */
-		public Swap(Node<E> x, Node<E> y) {
+		public SwapSinglyLinkedList(Node<E> x, Node<E> y) {
 			xNode = x;
 			yNode = y;
-			xNext = x.getNext();
-			yNext = y.getNext();
+			xNextNode = x.getNext();
+			yNextNode = y.getNext();
 		}
 
 		/**
@@ -181,13 +246,9 @@ public class SinglyLinkedList<E> implements Cloneable {
 		 */
 		public void swapNodes() {
 			findPrevNodes();
-
-			// if (x --> y)
 			if (nodesAdjacent(xNode, yNode)) {
 				swapAdjacentNodes(xPrevNode, xNode, yNode);
-			}
-			// if (y --> x)
-			else if (nodesAdjacent(yNode, xNode)) {
+			} else if (nodesAdjacent(yNode, xNode)) {
 				swapAdjacentNodes(yPrevNode, yNode, xNode);
 			} else {
 				swapUnAdjacentNodes();
@@ -220,8 +281,8 @@ public class SinglyLinkedList<E> implements Cloneable {
 		private void swapUnAdjacentNodes() {
 			xPrevNode.setNext(yNode);
 			yPrevNode.setNext(xNode);
-			xNode.setNext(yNext);
-			yNode.setNext(xNext);
+			xNode.setNext(yNextNode);
+			yNode.setNext(xNextNode);
 		}
 
 		/** Update tail pointer if x or y point to last node. */
@@ -257,13 +318,26 @@ public class SinglyLinkedList<E> implements Cloneable {
 		}
 	}
 
-	public void swapNodes(Node<E> x, Node<E> y) {
-		if (x == null || y == null)
-			throw new IllegalArgumentException("LinkedList is empty!");
-		if (x == y)
-			throw new IllegalArgumentException("x and y both refer to same node.");
+	public static class Node<E> {
+		private E element; // reference to the element stored at this node
+		private Node<E> next; // reference to the subsequent node in the list
 
-		new Swap(x, y).swapNodes();
+		public Node(E e, Node<E> n) {
+			element = e;
+			next = n;
+		}
+
+		public E getElement() {
+			return element;
+		}
+
+		public Node<E> getNext() {
+			return next;
+		}
+
+		public void setNext(Node<E> n) {
+			next = n;
+		}
 	}
 
 	@Override
@@ -287,6 +361,7 @@ public class SinglyLinkedList<E> implements Cloneable {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public SinglyLinkedList<E> clone() throws CloneNotSupportedException {
 		/*
 		 * The first step to making a class cloneable in Java is declaring that it
@@ -328,28 +403,6 @@ public class SinglyLinkedList<E> implements Cloneable {
 			}
 		}
 		return other;
-	}
-
-	public static class Node<E> {
-		private E element; // reference to the element stored at this node
-		private Node<E> next; // reference to the subsequent node in the list
-
-		public Node(E e, Node<E> n) {
-			element = e;
-			next = n;
-		}
-
-		public E getElement() {
-			return element;
-		}
-
-		public Node<E> getNext() {
-			return next;
-		}
-
-		public void setNext(Node<E> n) {
-			next = n;
-		}
 	}
 
 	public Node<E> getHead() {
