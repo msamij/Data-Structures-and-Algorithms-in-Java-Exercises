@@ -3,7 +3,7 @@ package fundamentalDataStructures;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CircularlyLinkedList<E> {
+public class CircularlyLinkedList<E> implements Cloneable {
 	private Node<E> tail = null;
 	private int size = 0;
 
@@ -79,6 +79,16 @@ public class CircularlyLinkedList<E> {
 			tail.setNext(head.getNext()); // removes ”head” from the list
 		size--;
 		return head.getElement();
+	}
+
+	public void printList() {
+		int counter = 1;
+		Node<E> walk = tail.getNext();
+		while (counter <= size()) {
+			System.out.println(walk.getElement());
+			walk = walk.getNext();
+			counter++;
+		}
 	}
 
 	/**
@@ -165,6 +175,28 @@ public class CircularlyLinkedList<E> {
 			walkB = walkB.getNext();
 		}
 		return true;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public CircularlyLinkedList<E> clone() throws CloneNotSupportedException {
+		var other = (CircularlyLinkedList<E>) super.clone();
+		if (size() > 0) {
+			other.tail = new Node<E>(tail.getElement(), null);
+			other.tail.setNext(other.tail);
+
+			Node<E> walk = tail.getNext();
+			Node<E> otherTail = other.tail;
+
+			while (walk != tail) {
+				Node<E> newest = new Node<>(walk.getElement(), null);
+				otherTail.setNext(newest);
+				otherTail = newest;
+				walk = walk.getNext();
+			}
+			otherTail.setNext(other.tail);
+		}
+		return other;
 	}
 
 	static class Node<E> {

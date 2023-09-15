@@ -9,7 +9,7 @@ import utilityClasses.TicTacToe;
 public class App {
     public static void main(String[] args) throws Exception {
         int[] array = { 1, 5, 3, 2, 1, 0, 8, 5, 2, 7, 7, 8, 3 }; // creativity 2
-        Creativity.creativity11();
+        Creativity.creativity18();
     }
 
     static void insertionSort(int[] data) {
@@ -289,7 +289,8 @@ public class App {
          */
         int[][] mData = { { 2, 3, 5, 7, 11, 13, 17, 19 }, { 52, 6, 1, 0 } };
         int[][] mBackup = new int[mData.length][];
-        for (int k = 0; k < mData.length; k++)
+        for (int k = 0; k < mData.length; k++) {
             mBackup[k] = mData[k].clone();
+        }
     }
 }

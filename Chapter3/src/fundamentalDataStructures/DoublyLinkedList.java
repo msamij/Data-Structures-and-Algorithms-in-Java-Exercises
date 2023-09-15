@@ -7,7 +7,7 @@ package fundamentalDataStructures;
  * <i>header</i> sentinal is a node in it's own not a pointer containing both
  * next and previous pointers. Same is the case with <i>trailer</i> sentinal.
  */
-public class DoublyLinkedList<E> {
+public class DoublyLinkedList<E> implements Cloneable {
 	private Node<E> header;
 	private Node<E> trailer;
 	private int size = 0;
@@ -184,7 +184,6 @@ public class DoublyLinkedList<E> {
 		size++;
 	}
 
-	// Since we're not using any instance variables class can be static.
 	private static final class SwapDoublyLinkedList<E> {
 		private Node<E> firstNode = null;
 		private Node<E> secondNode = null;
@@ -297,6 +296,32 @@ public class DoublyLinkedList<E> {
 			walkB = walkB.getNext();
 		}
 		return true;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public DoublyLinkedList<E> clone() throws CloneNotSupportedException {
+		var other = (DoublyLinkedList<E>) super.clone();
+		if (size() > 0) {
+			other.header = new Node<E>(null, null, null);
+			other.trailer = new Node<E>(null, other.header, null);
+			other.header.setNext(other.trailer);
+
+			Node<E> walk = header.getNext();
+			Node<E> otherHead = other.header;
+
+			while (walk != trailer) {
+				Node<E> newest = new Node<E>(walk.getElement(), null, null);
+				otherHead.setNext(newest);
+				newest.setPrev(otherHead);
+				otherHead = newest;
+				walk = walk.getNext();
+			}
+			// Cater for last node.
+			otherHead.setNext(other.trailer);
+			other.trailer.setPrev(otherHead);
+		}
+		return other;
 	}
 
 	public static final class Node<E> {

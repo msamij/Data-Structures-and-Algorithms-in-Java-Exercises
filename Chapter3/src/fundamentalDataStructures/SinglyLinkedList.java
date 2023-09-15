@@ -391,10 +391,10 @@ public class SinglyLinkedList<E> implements Cloneable {
 		 */
 
 		// always use inherited Object.clone() to create the initial copy.
-		SinglyLinkedList<E> other = (SinglyLinkedList<E>) super.clone(); // safe castsuper.clone();
+		var other = (SinglyLinkedList<E>) super.clone(); // safe castsuper.clone();
 
 		if (size > 0) { // we need independent chain of nodes.
-			other.head = new Node<>(head.getElement(), null);
+			other.head = new Node<E>(head.getElement(), null);
 			Node<E> walk = head.getNext(); // walk through remainder of original list.
 			Node<E> otherTail = other.head; // remember most recently created node.
 

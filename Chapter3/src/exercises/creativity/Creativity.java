@@ -20,8 +20,8 @@ public class Creativity {
 	private Creativity() {
 	}
 
-	private static class ArrayNotSupportedException extends Exception {
-		public ArrayNotSupportedException(String message) {
+	private static final class ArrayNotSupportedException extends Exception {
+		ArrayNotSupportedException(String message) {
 			super(message);
 		}
 	}
@@ -59,11 +59,13 @@ public class Creativity {
 		Set<Integer> repeatedNumbers = new HashSet<>();
 		Set<Integer> seen = new HashSet<>();
 		for (int num : B) {
-			if (seen.contains(num))
+			if (seen.contains(num)) {
 				repeatedNumbers.add(num);
-			else
+			} else {
 				seen.add(num);
+			}
 		}
+
 		System.out.println("Repeated integers are: ");
 		while (repeatedNumbers.iterator().hasNext()) {
 			System.out.println(repeatedNumbers.iterator().next());
@@ -424,5 +426,39 @@ public class Creativity {
 		iCDL.addLast(3);
 
 		iCDL.printList();
+		System.out.println();
+		iCDL.printListReverse();
+	}
+
+	/** C-3.34 Implement the clone() method for the CircularlyLinkedList class. */
+	public static void creativity17() {
+		var circularlyLinkedList = new CircularlyLinkedList<Integer>();
+		circularlyLinkedList.addFirst(0);
+		circularlyLinkedList.addLast(1);
+		circularlyLinkedList.addLast(2);
+
+		try {
+			var clonedCircularlyLinkedList = circularlyLinkedList.clone();
+			clonedCircularlyLinkedList.printList();
+		} catch (CloneNotSupportedException exception) {
+			System.out.println(exception.getMessage());
+		}
+	}
+
+	/** C-3.35 Implement the clone() method for the DoublyLinkedList class. */
+	public static void creativity18() {
+		var doublyLinkedList = new DoublyLinkedList<Integer>();
+		doublyLinkedList.addFirst(0);
+		doublyLinkedList.addLast(1);
+		doublyLinkedList.addLast(2);
+
+		try {
+			var clonedDoublyLinkedList = doublyLinkedList.clone();
+			clonedDoublyLinkedList.printList();
+			System.out.println();
+			clonedDoublyLinkedList.printListReverse();
+		} catch (CloneNotSupportedException exception) {
+			System.out.println(exception.getMessage());
+		}
 	}
 }
