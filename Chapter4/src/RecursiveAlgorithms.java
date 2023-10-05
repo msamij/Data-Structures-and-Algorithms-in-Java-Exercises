@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public final class RecursiveAlgorithms {
 	private RecursiveAlgorithms() {
@@ -59,7 +60,10 @@ public final class RecursiveAlgorithms {
 		}
 	}
 
-	public static long diskUsage(File root) {
+	public static long diskUsage(File root) throws FileNotFoundException {
+		if (!root.exists())
+			throw new FileNotFoundException(root.getName() + " file or directory doesn't exists.");
+
 		long total = root.length(); // start with direct disk usage
 		if (root.isDirectory()) { // and if this is a directory
 			for (String childname : root.list()) { // then for each child
@@ -115,7 +119,7 @@ public final class RecursiveAlgorithms {
 		}
 	}
 
-	public static class RecursiveAlgorithmsForComputingPowers {
+	public static final class RecursiveAlgorithmsForComputingPowers {
 		/**
 		 * Computes the value of x raised to the nth power, for nonnegative integer n.
 		 * 
@@ -125,7 +129,7 @@ public final class RecursiveAlgorithms {
 		 * with the parameter decreasing by one with each call, and constant work
 		 * performed at each of n + 1 levels.
 		 */
-		static double power1(double x, int n) {
+		public static double power1(double x, int n) {
 			if (n == 0)
 				return 1;
 			else
@@ -144,7 +148,7 @@ public final class RecursiveAlgorithms {
 		 * calls. Each individual activation of the method uses O(1) operations
 		 * (excluding the recursive call), and so the total number of operations for
 		 * computing power(x,n) is O(log n). This is a significant improvement over the
-		 * original O(n)-time algorithm.
+		 * original O(n) time algorithm.
 		 * 
 		 * <p/>
 		 * The improved version also provides significant saving in reducing the memory
@@ -152,7 +156,7 @@ public final class RecursiveAlgorithms {
 		 * frames are simultaneously stored in memory. Because the recursive depth of
 		 * the improved version is O(log n), its memory usage is O(log n) as well.
 		 */
-		static double power2(double x, int n) {
+		public static double power2(double x, int n) {
 			if (n == 0)
 				return 1;
 			else {
@@ -164,7 +168,20 @@ public final class RecursiveAlgorithms {
 			}
 		}
 
-		static int binarySum(int[] data, int low, int high) {
+		/**
+		 * Returns the sum of subarray data[low] through data[high] inclusive.
+		 * 
+		 * <p/>
+		 * To analyze algorithm binarySum, we consider, for simplicity, the case where
+		 * n is a power of two. The size of the range is divided in half at each
+		 * recursive call, and so the depth of the recursion is 1 + log2(n). Therefore,
+		 * binarySum uses O(logn) amount of additional space, which is a big improvement
+		 * over the O(n) space used by the linearSum method. However, the running time
+		 * of binarySum is O(n), as there are 2n − 1 method calls, each requiring
+		 * constant time.
+		 */
+
+		public static int binarySum(int[] data, int low, int high) {
 			if (low > high)
 				return 0;
 			else if (low == high)
