@@ -39,12 +39,17 @@ public final class RecursiveAlgorithms {
 			return n * factorial(n - 1);
 	}
 
+	/** Returns true if the target value is found in the data array. */
+	public static boolean binarySearch(int[] data, int target) {
+		return binarySearch(data, target, 0, data.length - 1);
+	}
+
 	/**
 	 * Returns true if the target value is found in the indicated portion of the
 	 * data array. This search only considers the array portion from data[low] to
 	 * data[high] inclusive.
 	 */
-	public static boolean binarySearch(int[] data, int target, int low, int high) {
+	private static boolean binarySearch(int[] data, int target, int low, int high) {
 		if (low > high)
 			return false;
 		else {
@@ -189,6 +194,145 @@ public final class RecursiveAlgorithms {
 			else {
 				int mid = (low + high) / 2;
 				return binarySum(data, low, mid) + binarySum(data, mid + 1, high);
+			}
+		}
+	}
+
+	public static final class RecursionRunAmok {
+		/**
+		 * Although recursion is a very powerful tool, it can easily be misused in
+		 * various ways. In this section, we examine several cases in which a poorly
+		 * implemented recursion causes drastic inefficiency, and we discuss some
+		 * strategies for recognizing and avoid such pitfalls. We begin by revisiting
+		 * the element uniqueness problem, We can use the following recursive
+		 * formulation to determine if all n elements of a sequence are unique. As a
+		 * base case, when n = 1, the elements are trivially unique. For n ≥ 2, the
+		 * elements are unique if and only if the first n − 1 elements are unique, the
+		 * last n − 1 items are unique, and the first and last elements are different
+		 * (as that is the only pair that was not already checked as a subcase).
+		 * A recursive implementation based on this idea is given in Code named unique3
+		 * (to differentiate it from unique1 and unique2 from Chapter 4).
+		 * 
+		 * Unfortunately, this is a terribly inefficient use of recursion. The
+		 * nonrecursive part of each call uses O(1) time, so the overall running time
+		 * will be proportional to the total number of recursive invocations. To analyze
+		 * the problem, we let n denote the number of entries under consideration, that
+		 * is, let n = 1 + high − low. If n = 1, then the running time of unique3 is
+		 * O(1), since there are no recursive calls for this case. In the general case,
+		 * the important observation is that a single call to unique3 for a problem of
+		 * size n may result in two recursive calls on problems of size n − 1. Those two
+		 * calls with size n − 1 could in turn result in four calls (two each) with a
+		 * range of size n − 2, and thus eight calls with size n − 3 and so on. Thus, in
+		 * the worst case, the total number of method calls is given by the geometric
+		 * summation 1 + 2 + 4 + · · · + 2 n − 1 , which is equal to 2^(n − 1) Thus, the
+		 * running time of method unique3 is O(2^n). This is an incredibly inefficient
+		 * method for solving the element uniqueness problem. Its inefficiency comes not
+		 * from the fact that it uses recursion it comes from the fact that it uses
+		 * recursion poorly.
+		 */
+
+		/**
+		 * Returns true if there are no duplicate values from data[low] through
+		 * data[high].
+		 */
+		public static boolean unique3(int[] data, int low, int high) {
+			if (low >= high) {
+				return true; // at most one item
+			} else if (!unique3(data, low, high - 1)) {
+				return false; // duplicate in first n − 1
+			} else if (!unique3(data, low + 1, high)) {
+				return false; // duplicate in last n − 1
+			} else {
+				return (data[low] != data[high]); // do first and last differ?
+			}
+		}
+
+		/**
+		 * Unfortunately, such a direct implementation of the Fibonacci formula results
+		 * in a terribly inefficient method. Computing the n th Fibonacci number in this
+		 * way requires an exponential number of calls to the method. Specifically, let
+		 * cn denote the number of calls performed in the execution of fibonacciBad(n).
+		 * Then, we have the following values for the cn’s:
+		 * 
+		 * <p/>
+		 * c0 = 1
+		 * 
+		 * <p/>
+		 * c1 = 1
+		 * 
+		 * <p/>
+		 * c2 = 1 + c0 + c1 = 1 + 1 + 1 = 3
+		 * 
+		 * <p/>
+		 * c3 = 1 + c1 + c2 = 1 + 1 + 3 = 5
+		 * 
+		 * <p/>
+		 * c4 = 1 + c2 + c3 = 1 + 3 + 5 = 9
+		 * 
+		 * <p/>
+		 * c5 = 1 + c3 + c4 = 1 + 5 + 9 = 15
+		 * 
+		 * <p/>
+		 * 
+		 * c6 = 1 + c4 + c5 = 1 + 9 + 15 = 25
+		 * 
+		 * <p/>
+		 * c7 = 1 + c5 + c6 = 1 + 15 + 25 = 41
+		 * 
+		 * <p/>
+		 * c8 = 1 + c6 + c7 = 1 + 25 + 41 = 67
+		 * 
+		 * <p/>
+		 * If we follow the pattern forward, we see that the number of calls more than
+		 * doubles for each two consecutive indices. That is, c4 is more than twice c2,
+		 * c5 is more than twice c3 , c6 is more than twice c4 , and so on. Thus,
+		 * (cn > 2^n/2) , which means that fibonacciBad(n) makes a number of calls that
+		 * is exponential in n.
+		 * 
+		 * <p/>
+		 *
+		 * Returns the nth Fibonacci number (inefficiently).
+		 */
+		public static long fibonacciBad(int n) {
+			if (n <= 1) {
+				return n;
+			} else {
+				return fibonacciBad(n - 2) + fibonacciBad(n - 1);
+			}
+		}
+
+		/**
+		 * We were tempted into using the bad recursive formulation because of the way
+		 * the nth Fibonacci number, Fn , depends on the two previous values, Fn−2
+		 * and Fn−1 . But notice that after computing Fn−2 , the call to compute Fn−1
+		 * requires its own recursive call to compute Fn−2 , as it does not have
+		 * knowledge of the value of Fn−2 that was computed at the earlier level of
+		 * recursion. That is duplicative work. Worse yet, both of those calls will need
+		 * to (re)compute the value of Fn−3 , as will the computation of Fn−1 . This
+		 * snowballing effect is what leads to the exponential running time of
+		 * fibonacciBad.
+		 * 
+		 * <p/>
+		 * In terms of efficiency, the difference between the bad and good recursions
+		 * for this problem is like night and day. The fibonacciBad method uses
+		 * exponential time. We claim that the execution of method fibonacciGood(n) runs
+		 * in O(n) time. Each recursive call to fibonacciGood decreases the argument n
+		 * by 1, therefore, a recursion trace includes a series of n method calls.
+		 * Because the nonrecursive work for each call uses constant time, the overall
+		 * computation executes in O(n) time.
+		 * 
+		 * <p/>
+		 * Returns array containing the pair of Fibonacci numbers, F(n) and F(n - 1).
+		 */
+		public static long[] fibonacciGood(int n) {
+			if (n <= 1) {
+				long[] answer = { n, 0 };
+				return answer;
+
+			} else {
+				long[] temp = fibonacciGood(n - 1); // returns {Fn − 1 , Fn − 2 }
+				long[] answer = { temp[0] + temp[1], temp[0] }; // we want {Fn , Fn − 1 }
+				return answer;
 			}
 		}
 	}
