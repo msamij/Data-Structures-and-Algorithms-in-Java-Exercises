@@ -50,9 +50,9 @@ public final class IterativeAlgorithms {
 
 	/**
 	 * 
-	 * @param n
+	 * @param n must be non-negative and non-zero.
 	 * @return nth fibonacci number.
-	 * @throws IllegalArgumentException
+	 * @throws IllegalArgumentException if n <= 0
 	 */
 	public static int fibonacci(int n) throws IllegalArgumentException {
 		if (n <= 0)
@@ -68,6 +68,22 @@ public final class IterativeAlgorithms {
 			result = (fibPrev + fibNext);
 			fibPrev = fibNext;
 			fibNext = result;
+		}
+		return result;
+	}
+
+	/**
+	 * 
+	 * @param data
+	 * @param n
+	 * @return sum of the data array.
+	 */
+	public static int linearSum(int[] data, int n) {
+		if (n == 0)
+			return 0;
+		int result = 0;
+		for (int i = 0; i < data.length; i++) {
+			result += data[i];
 		}
 		return result;
 	}
