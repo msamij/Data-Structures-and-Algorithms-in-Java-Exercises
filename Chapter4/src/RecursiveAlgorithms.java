@@ -31,12 +31,13 @@ public final class RecursiveAlgorithms {
 	 * accounts for O(1) operations.
 	 */
 	public static int factorial(int n) throws IllegalArgumentException {
-		if (n < 0)
+		if (n < 0) {
 			throw new IllegalArgumentException();
-		else if (n == 0)
+		} else if (n == 0)
 			return 1;
-		else
+		else {
 			return n * factorial(n - 1);
+		}
 	}
 
 	/** Returns true if the target value is found in the data array. */
@@ -66,8 +67,9 @@ public final class RecursiveAlgorithms {
 	}
 
 	public static long diskUsage(File root) throws FileNotFoundException {
-		if (!root.exists())
+		if (!root.exists()) {
 			throw new FileNotFoundException(root.getName() + " file or directory doesn't exists.");
+		}
 
 		long total = root.length(); // start with direct disk usage
 		if (root.isDirectory()) { // and if this is a directory
@@ -99,8 +101,9 @@ public final class RecursiveAlgorithms {
 	public static int linearSum(int[] data, int n) {
 		if (n == 0)
 			return 0;
-		else
+		else {
 			return linearSum(data, n - 1) + data[n - 1];
+		}
 	}
 
 	/**
@@ -137,8 +140,9 @@ public final class RecursiveAlgorithms {
 		public static double power1(double x, int n) {
 			if (n == 0)
 				return 1;
-			else
+			else {
 				return x * power1(x, n - 1);
+			}
 		}
 
 		/**

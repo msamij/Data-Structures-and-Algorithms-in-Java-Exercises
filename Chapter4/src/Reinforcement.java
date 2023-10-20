@@ -5,6 +5,8 @@ public final class Reinforcement {
 	/**
 	 * R-5.1 Describe a recursive algorithm for finding the maximum element in an
 	 * array, A, of n elements. What is your running time and space usage?
+	 * <p/>
+	 * The algorithm runs in O(n) time and uses O(n) space.
 	 */
 	public static int reinforcement1(final int[] A, final int n) {
 		if (A.length == 0) {
@@ -17,7 +19,7 @@ public final class Reinforcement {
 		if (n == 0)
 			return A[n];
 		else {
-			int maximum = maximumArray(A, n - 1, A[n]);
+			final int maximum = maximumArray(A, n - 1, A[n]);
 			return (maximum >= A[n]) ? maximum : A[n];
 		}
 	}
@@ -43,7 +45,7 @@ public final class Reinforcement {
 		if (low > high)
 			return -1;
 		else {
-			int mid = (low + high) / 2;
+			final int mid = (low + high) / 2;
 			if (target == data[mid])
 				return mid;
 
@@ -52,6 +54,18 @@ public final class Reinforcement {
 			} else {
 				return binarySearch(data, target, mid + 1, high);
 			}
+		}
+	}
+
+	/**
+	 * R-5.7 Describe a recursive algorithm for computing the nth Harmonic number,
+	 * defined as Hn = ∑k=1 to n (1/k).
+	 */
+	public static double reinforcement7(int n) {
+		if (n == 1)
+			return n;
+		else {
+			return (double) 1 / n + reinforcement7(n - 1);
 		}
 	}
 
@@ -72,5 +86,61 @@ public final class Reinforcement {
 			return Integer.parseInt(Character.toString(digits[0]));
 		}
 		return Integer.parseInt(Integer.toString(stringToInteger(digits, n - 1)) + digits[n]);
+	}
+
+	/**
+	 * R-5.9 Develop a nonrecursive implementation of the version of the power
+	 * method from Code Fragment 5.9 that uses repeated squaring.
+	 *
+	 * <p/>
+	 * Computes the value of x raised to the nth power, for nonnegative integer n.
+	 */
+	public static long reinforcement9(final long x, final long n) {
+		if (n == 0)
+			return 1;
+		if (x == 0)
+			return 0;
+		if (n < 0)
+			throw new IllegalArgumentException("Exponent must be positive.");
+		return nonRecursivePower(x, n);
+	}
+
+	private static long nonRecursivePower(final long x, final long n) {
+		long base = x;
+		long result = 1;
+		long exponent = n;
+		while (exponent != 0) {
+			if ((exponent % 2) != 0) {
+				result = (result * base);
+			}
+			base = (base * base);
+			exponent >>= 1;
+		}
+		return result;
+	}
+
+	/**
+	 * R-5.10 Describe a way to use recursion to compute the sum of all the elements
+	 * in an (n x n) (two-dimensional) array of integers.
+	 */
+	public static int reinforcement10(final int[][] array, final int n) {
+		if (array.length == 0) {
+			throw new IllegalArgumentException("Array must not be empty!");
+		}
+		int sum = 0;
+		int recursiveDepth = n;
+		while (recursiveDepth >= 0) {
+			sum += linearSum(array[recursiveDepth], array[recursiveDepth].length - 1);
+			recursiveDepth -= 1;
+		}
+		return sum;
+	}
+
+	private static int linearSum(final int[] array, int n) {
+		if (n == 0)
+			return array[n];
+		else {
+			return (array[n] + linearSum(array, n - 1));
+		}
 	}
 }
