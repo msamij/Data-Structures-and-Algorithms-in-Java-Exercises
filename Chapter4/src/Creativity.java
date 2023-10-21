@@ -132,9 +132,9 @@ public final class Creativity {
 	 * storage.”)
 	 */
 	public static <T> Stack<T> creativity6(final Stack<T> pegA) {
-		if (pegA.empty())
+		if (pegA.empty()) {
 			throw new IllegalArgumentException("Peg is empty!");
-		else {
+		} else {
 			final Stack<T> pegB = new Stack<>();
 			final Stack<T> pegC = new Stack<>();
 			return performPegMove(pegA, pegB, pegC);
@@ -153,5 +153,155 @@ public final class Creativity {
 			performPegMove(pegA, pegB, pegC);
 		}
 		return pegC;
+	}
+
+	/**
+	 * C-5.17 Write a short recursive Java method that takes a character string s
+	 * and outputs its reverse. For example, the reverse of 'pots&pans' would be
+	 * 'snap&stop'.
+	 */
+	public static StringBuilder creativity7(final String s) {
+		return reverseString(s);
+	}
+
+	/**
+	 * C-5.18 Write a short recursive Java method that determines if a string s is a
+	 * palindrome, that is, it is equal to its reverse. Examples of palindromes
+	 * include 'racecar' and 'gohangasalamiimalasagnahog'.
+	 */
+	public static boolean creativity8(final String s) {
+		return reverseString(s).toString().equals(s);
+	}
+
+	/**
+	 * 
+	 * @param s string must not be empty
+	 * @return string as stringBuilder instance containing reverse of string s.
+	 */
+	private static StringBuilder reverseString(String s) {
+		if (s.length() == 0 || s == null) {
+			throw new IllegalArgumentException("String is empty!");
+		} else if (s.length() == 1) {
+			return new StringBuilder(s);
+		} else {
+			final StringBuilder stringBuilder = new StringBuilder();
+			return reverseString(s, stringBuilder, s.length() - 1);
+		}
+	}
+
+	/**
+	 * 
+	 * @param string        string.
+	 * @param stringBuilder stringBuilder instance.
+	 * @param stringLength  length of string.
+	 * @return stringBuilder instance containing reverse of string s.
+	 */
+	private static StringBuilder reverseString(
+			final String string,
+			final StringBuilder stringBuilder,
+			final int stringLength) {
+		if (stringLength < 0)
+			return null;
+		else {
+			stringBuilder.append(string.charAt(stringLength));
+			reverseString(string, stringBuilder, stringLength - 1);
+			return stringBuilder;
+		}
+	}
+
+	/**
+	 * C-5.20 Write a short recursive Java method that rearranges an array of
+	 * integer values so that all the even values appear before all the odd values.
+	 */
+	public static int[] creativity9(final int[] array) {
+		if (array.length == 0)
+			throw new IllegalArgumentException("Array is empty!");
+		else if (array.length == 1)
+			return array;
+		else {
+			return recursiveShuffleEvenOdd(array, 0);
+		}
+	}
+
+	/**
+	 * Recursively shuffles an array so that even integer's appear before odd one's.
+	 * 
+	 * @param array
+	 * @param arrayIndex startingIndex of an array (Generally starts with index 0).
+	 * @return the modified array such that all even numbers appear before odd.
+	 */
+	private static int[] recursiveShuffleEvenOdd(int[] array, final int arrayIndex) {
+		if (arrayIndex == array.length)
+			return array;
+		else {
+			if ((array[arrayIndex] % 2 != 0)) {
+				final int evenIndex = findEvenIndex(array, arrayIndex);
+				try {
+					array = performArrayElementSwap(array, arrayIndex, evenIndex);
+				} catch (IllegalArgumentException e) {
+					// Do absolutely nothing.
+				}
+			}
+			return recursiveShuffleEvenOdd(array, arrayIndex + 1);
+		}
+	}
+
+	private static int[] iterativeShuffleEvenOdd(int[] array, final int arrayIndex) {
+		int oddIndex = 0;
+		int evenIndex = 0;
+		while (oddIndex < array.length) {
+			if ((array[oddIndex] % 2 != 0)) {
+				evenIndex = findEvenIndex(array, oddIndex);
+				try {
+					array = performArrayElementSwap(array, arrayIndex, evenIndex);
+				} catch (IllegalArgumentException e) {
+					// Do absolutely nothing.
+				}
+			}
+			oddIndex++;
+		}
+		return array;
+	}
+
+	/**
+	 * Swaps array element with each other (replaces element at swapIndex with
+	 * element at targetIndex and vice-versa).
+	 * 
+	 * @param array
+	 * @param sourceIndex index of the element to be swapped with targetIndex.
+	 * @param targetIndex index of the element to be swapped with sourceIndex.
+	 * @return the modified array with elements being swapped with each other.
+	 */
+	private static int[] performArrayElementSwap(final int[] array, int sourceIndex, int targetIndex) {
+		if (array.length == 0) {
+			throw new IllegalArgumentException("Array is empty and cannot be swapped.");
+		} else if ((sourceIndex < 0) || (targetIndex < 0)) {
+			throw new IllegalArgumentException("Negative indicies are invalid for an array.");
+		} else if (sourceIndex == targetIndex) {
+			throw new IllegalArgumentException("Both indicies are equal.");
+		} else {
+			final int source = array[sourceIndex];
+			array[sourceIndex] = array[targetIndex];
+			array[targetIndex] = source;
+			return array;
+		}
+	}
+
+	/**
+	 * Runs in O(n) in worst case if we have to traverse entire array.
+	 * 
+	 * @param array
+	 * @param startingIndex index from where to start search from.
+	 * @return index of element which is even -1 otherwise.
+	 */
+	private static int findEvenIndex(final int[] array, final int startingIndex) {
+		int index = -1;
+		for (int i = startingIndex; i < array.length; i++) {
+			if ((array[i] % 2 == 0)) {
+				index = i;
+				break;
+			}
+		}
+		return index;
 	}
 }

@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
@@ -72,5 +73,15 @@ public class App {
         while (!stack2.empty()) {
             System.out.println(stack2.pop());
         }
+
+        System.out.println("");
+        System.out.println(Creativity.creativity7("pots&pans"));
+
+        System.out.println("");
+        System.out.println(Creativity.creativity8("i"));
+
+        System.out.println("");
+        final int[] oddEvenArray = { 3, 9, 2, 4, 0, 6, 8 };
+        System.out.println(Arrays.toString(Creativity.creativity9(oddEvenArray)));
     }
 }
