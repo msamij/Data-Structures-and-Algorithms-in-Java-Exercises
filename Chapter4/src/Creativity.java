@@ -19,17 +19,7 @@ public final class Creativity {
 		} else if (argument < 1) {
 			throw new IllegalArgumentException("Argument cannot be negative.");
 		}
-		return computeLog(base, argument);
-	}
-
-	private static int computeLog(final int base, final int argument) {
-		if (argument <= 1)
-			return 0;
-		else {
-			int recursiveCalls = 1;
-			final int logArgument = (argument / base);
-			return recursiveCalls += computeLog(base, logArgument);
-		}
+		return CreativityUtility.computeLog(base, argument);
 	}
 
 	/**
@@ -44,25 +34,7 @@ public final class Creativity {
 			return true;
 		} else {
 			final HashSet<Integer> hashSet = new HashSet<>();
-			return uniqueness(array, 0, hashSet);
-		}
-	}
-
-	/**
-	 * 
-	 * @param array
-	 * @param index
-	 * @param hashSet
-	 * @return true if all elements of array are unique false otherwise.
-	 */
-	private static boolean uniqueness(final int[] array, final int index, final HashSet<Integer> hashSet) {
-		if (index == array.length)
-			return true;
-		else if (hashSet.contains(array[index]))
-			return false;
-		else {
-			hashSet.add(array[index]);
-			return uniqueness(array, index + 1, hashSet);
+			return CreativityUtility.uniqueness(array, 0, hashSet);
 		}
 	}
 
@@ -80,15 +52,7 @@ public final class Creativity {
 
 		final int additionThreshold = (n < m ? n : m); // This'll dettermine no of recursive calls to perform.
 		final int largestInteger = (n > m ? n : m); // Largest number to perform addition on itself.
-		return recursiveProduct(largestInteger, additionThreshold);
-	}
-
-	private static int recursiveProduct(final int no, final int additionThreshold) {
-		if (additionThreshold == 0)
-			return 0;
-		else {
-			return (no + recursiveProduct(no, additionThreshold - 1));
-		}
+		return CreativityUtility.recursiveProduct(largestInteger, additionThreshold);
 	}
 
 	/**
@@ -100,23 +64,7 @@ public final class Creativity {
 			throw new IllegalArgumentException("Set is empty!");
 		} else {
 			final Iterator<Set<?>> superSetiterator = superSet.iterator();
-			recursiveSuperSet(superSet, superSetiterator);
-		}
-	}
-
-	private static void recursiveSuperSet(final Set<Set<?>> superSet, final Iterator<Set<?>> superSetIterator) {
-		if (superSetIterator.hasNext()) {
-			final Set<?> subSet = superSetIterator.next();
-			printSubsets(subSet);
-			recursiveSuperSet(superSet, superSetIterator);
-		}
-	}
-
-	private static void printSubsets(Set<?> subSet) {
-		final Iterator<?> subSetIterator = subSet.iterator();
-		while (subSetIterator.hasNext()) {
-			Object subSetElement = subSetIterator.next();
-			System.out.println(subSetElement);
+			CreativityUtility.recursiveSuperSet(superSet, superSetiterator);
 		}
 	}
 
@@ -137,22 +85,8 @@ public final class Creativity {
 		} else {
 			final Stack<T> pegB = new Stack<>();
 			final Stack<T> pegC = new Stack<>();
-			return performPegMove(pegA, pegB, pegC);
+			return CreativityUtility.performPegMove(pegA, pegB, pegC);
 		}
-	}
-
-	private static <T> Stack<T> performPegMove(final Stack<T> pegA, final Stack<T> pegB, final Stack<T> pegC) {
-		// Moves all from pegB to pegC.
-		if ((pegA.empty()) && !pegB.empty()) {
-			pegC.push(pegB.pop());
-			performPegMove(pegA, pegB, pegC);
-		}
-		// Perform all moves from pegA to pegB.
-		else if (pegC.empty()) {
-			pegB.push(pegA.pop());
-			performPegMove(pegA, pegB, pegC);
-		}
-		return pegC;
 	}
 
 	/**
@@ -161,7 +95,7 @@ public final class Creativity {
 	 * 'snap&stop'.
 	 */
 	public static StringBuilder creativity7(final String s) {
-		return reverseString(s);
+		return CreativityUtility.reverseString(s);
 	}
 
 	/**
@@ -170,43 +104,7 @@ public final class Creativity {
 	 * include 'racecar' and 'gohangasalamiimalasagnahog'.
 	 */
 	public static boolean creativity8(final String s) {
-		return reverseString(s).toString().equals(s);
-	}
-
-	/**
-	 * 
-	 * @param s string must not be empty
-	 * @return string as stringBuilder instance containing reverse of string s.
-	 */
-	private static StringBuilder reverseString(String s) {
-		if (s.length() == 0 || s == null) {
-			throw new IllegalArgumentException("String is empty!");
-		} else if (s.length() == 1) {
-			return new StringBuilder(s);
-		} else {
-			final StringBuilder stringBuilder = new StringBuilder();
-			return reverseString(s, stringBuilder, s.length() - 1);
-		}
-	}
-
-	/**
-	 * 
-	 * @param string        string.
-	 * @param stringBuilder stringBuilder instance.
-	 * @param stringLength  length of string.
-	 * @return stringBuilder instance containing reverse of string s.
-	 */
-	private static StringBuilder reverseString(
-			final String string,
-			final StringBuilder stringBuilder,
-			final int stringLength) {
-		if (stringLength < 0)
-			return null;
-		else {
-			stringBuilder.append(string.charAt(stringLength));
-			reverseString(string, stringBuilder, stringLength - 1);
-			return stringBuilder;
-		}
+		return CreativityUtility.reverseString(s).toString().equals(s);
 	}
 
 	/**
@@ -219,89 +117,353 @@ public final class Creativity {
 		else if (array.length == 1)
 			return array;
 		else {
-			return recursiveShuffleEvenOdd(array, 0);
+			return CreativityUtility.recursiveShuffleEvenOdd(array, 0);
 		}
 	}
 
 	/**
-	 * Recursively shuffles an array so that even integer's appear before odd one's.
-	 * 
-	 * @param array
-	 * @param arrayIndex startingIndex of an array (Generally starts with index 0).
-	 * @return the modified array such that all even numbers appear before odd.
+	 * C-5.21 Given an unsorted array, A, of integers and an integer k, describe a
+	 * recursive algorithm for rearranging the elements in A so that all elements
+	 * less than or equal to k come before any elements larger than k. What is the
+	 * running time of your algorithm on an array of n values?
 	 */
-	private static int[] recursiveShuffleEvenOdd(int[] array, final int arrayIndex) {
-		if (arrayIndex == array.length)
+	public static int[] creativity10(final int[] unsortedArray, int k) {
+		if (unsortedArray.length == 0) {
+			throw new IllegalArgumentException("Array is empty!");
+		}
+		return CreativityUtility.recursiveShuffle(unsortedArray, 0, k);
+	}
+
+	/**
+	 * C-5.22 Suppose you are given an array, A, containing n distinct integers that
+	 * are listed in increasing order. Given a number k, describe a recursive
+	 * algorithm to find two integers in A that sum to k, if such a pair exists.
+	 * What is the running time of your algorithm?
+	 */
+	public static int[] creativity11(final int[] sortedArray, final int k) {
+		if (sortedArray.length == 0) {
+			throw new IllegalArgumentException("Array is empty!");
+		} else if (sortedArray.length == 1) {
+			throw new IllegalArgumentException("Array contains only one element");
+		}
+		return CreativityUtility.digitsOfSum(sortedArray, 0, sortedArray.length - 1, k);
+	}
+
+	/**
+	 * C-5.23 Describe a recursive algorithm that will check if an array A of
+	 * integers contains an integer A[i] that is the sum of two integers that appear
+	 * earlier in A, that is, such that A[i] = A[j] + A[k] for j, k < i.
+	 */
+	public static int creativity12(final int[] A) {
+		if (A.length == 0) {
+			throw new IllegalArgumentException("Array is empty");
+		} else if (A.length < 2) {
+			throw new IllegalArgumentException("Array must contain more than two elements!");
+		}
+		return CreativityUtility.sumOfTwoPrevious(A, 2, 0, 1);
+	}
+
+	private static final class CreativityUtility {
+		private CreativityUtility() {
+		}
+
+		/**
+		 * Recursively computes log.
+		 * 
+		 * @param base
+		 * @param argument
+		 * @return
+		 */
+		static int computeLog(final int base, final int argument) {
+			if (argument <= 1)
+				return 0;
+			else {
+				int recursiveCalls = 1;
+				final int logArgument = (argument / base);
+				return recursiveCalls += computeLog(base, logArgument);
+			}
+		}
+
+		/**
+		 * 
+		 * @param array
+		 * @param index
+		 * @param hashSet
+		 * @return true if all elements of array are unique false otherwise.
+		 */
+		static boolean uniqueness(final int[] array, final int index, final HashSet<Integer> hashSet) {
+			if (index == array.length)
+				return true;
+			else if (hashSet.contains(array[index]))
+				return false;
+			else {
+				hashSet.add(array[index]);
+				return uniqueness(array, index + 1, hashSet);
+			}
+		}
+
+		/**
+		 * Recursively computes product by employing repeated addition.
+		 * 
+		 * @param no                an integer to which it'll perform repeated addition
+		 *                          on itself.
+		 * 
+		 * @param additionThreshold no of times recursion take place. (This dettermines
+		 *                          no of times (no) parameter perform addition on
+		 *                          itself.
+		 * 
+		 * @return an integer which'll be product of given integer no.
+		 */
+		static int recursiveProduct(final int no, final int additionThreshold) {
+			if (additionThreshold == 0)
+				return 0;
+			else {
+				return (no + recursiveProduct(no, additionThreshold - 1));
+			}
+		}
+
+		static void recursiveSuperSet(final Set<Set<?>> superSet, final Iterator<Set<?>> superSetIterator) {
+			if (superSetIterator.hasNext()) {
+				final Set<?> subSet = superSetIterator.next();
+				printSubsets(subSet);
+				recursiveSuperSet(superSet, superSetIterator);
+			}
+		}
+
+		static void printSubsets(Set<?> subSet) {
+			final Iterator<?> subSetIterator = subSet.iterator();
+			while (subSetIterator.hasNext()) {
+				Object subSetElement = subSetIterator.next();
+				System.out.println(subSetElement);
+			}
+		}
+
+		static <T> Stack<T> performPegMove(final Stack<T> pegA, final Stack<T> pegB, final Stack<T> pegC) {
+			// Moves all from pegB to pegC.
+			if ((pegA.empty()) && !pegB.empty()) {
+				pegC.push(pegB.pop());
+				performPegMove(pegA, pegB, pegC);
+			}
+			// Perform all moves from pegA to pegB.
+			else if (pegC.empty()) {
+				pegB.push(pegA.pop());
+				performPegMove(pegA, pegB, pegC);
+			}
+			return pegC;
+		}
+
+		static int[] recursiveShuffle(int[] array, final int currentIndex, final int k) {
+			if (currentIndex == array.length)
+				return array;
+			else {
+				if (array[currentIndex] > k) {
+					final int smallerIntegerIndex = findSmallestIntegerIndex(array, currentIndex,
+							k);
+					try {
+						array = performArrayElementSwap(array, currentIndex,
+								smallerIntegerIndex);
+					} catch (IllegalArgumentException e) {
+						// Do absolutely nothing.
+					}
+				}
+				return recursiveShuffle(array, currentIndex + 1, k);
+			}
+		}
+
+		/**
+		 * Recursively shuffles an array so that even integer's appear before odd one's.
+		 * 
+		 * @param array
+		 * @param currentIndex startingIndex of an array, generally starts with index 0.
+		 * @return the modified array such that all even numbers appear before odd.
+		 */
+		static int[] recursiveShuffleEvenOdd(int[] array, final int currentIndex) {
+			if (currentIndex == array.length)
+				return array;
+			else {
+				if ((array[currentIndex] % 2 != 0)) {
+					final int evenIndex = findEvenIndex(array, currentIndex);
+					try {
+						array = performArrayElementSwap(array, currentIndex, evenIndex);
+					} catch (IllegalArgumentException e) {
+						// Do absolutely nothing.
+					}
+				}
+				return recursiveShuffleEvenOdd(array, currentIndex + 1);
+			}
+		}
+
+		static int[] iterativeShuffleEvenOdd(int[] array, final int arrayIndex) {
+			int oddIndex = 0;
+			int evenIndex = 0;
+			while (oddIndex < array.length) {
+				if ((array[oddIndex] % 2 != 0)) {
+					evenIndex = findEvenIndex(array, oddIndex);
+					try {
+						array = performArrayElementSwap(array, arrayIndex, evenIndex);
+					} catch (IllegalArgumentException e) {
+						// Do absolutely nothing.
+					}
+				}
+				oddIndex++;
+			}
 			return array;
-		else {
-			if ((array[arrayIndex] % 2 != 0)) {
-				final int evenIndex = findEvenIndex(array, arrayIndex);
-				try {
-					array = performArrayElementSwap(array, arrayIndex, evenIndex);
-				} catch (IllegalArgumentException e) {
-					// Do absolutely nothing.
+		}
+
+		/**
+		 * Swaps array element with each other (replaces element at sourceIndex with
+		 * element at targetIndex and vice-versa).
+		 * 
+		 * @param array
+		 * @param sourceIndex index of the element to be swapped with targetIndex.
+		 * @param targetIndex index of the element to be swapped with sourceIndex.
+		 * @return the modified array with elements being swapped with each other.
+		 */
+		static int[] performArrayElementSwap(final int[] array, int sourceIndex, int targetIndex) {
+			if (array.length == 0) {
+				throw new IllegalArgumentException("Array is empty and cannot be swapped.");
+			} else if ((sourceIndex < 0) || (targetIndex < 0)) {
+				throw new IllegalArgumentException("Negative indicies are invalid for an array.");
+			} else if (sourceIndex == targetIndex) {
+				throw new IllegalArgumentException("Both indicies are equal.");
+			} else {
+				final int source = array[sourceIndex];
+				array[sourceIndex] = array[targetIndex];
+				array[targetIndex] = source;
+				return array;
+			}
+		}
+
+		/**
+		 * Finds and returns the index of the even integer in the given array.
+		 * <p/>
+		 * Runs in O(n) in worst case if we have to traverse entire array.
+		 * 
+		 * @param array
+		 * @param startingIndex index from where to start search.
+		 * @return index of element which is even -1 otherwise.
+		 */
+		static int findEvenIndex(final int[] array, final int startingIndex) {
+			int index = -1;
+			for (int i = startingIndex; i < array.length; i++) {
+				if ((array[i] % 2 == 0)) {
+					index = i;
+					break;
 				}
 			}
-			return recursiveShuffleEvenOdd(array, arrayIndex + 1);
+			return index;
 		}
-	}
 
-	private static int[] iterativeShuffleEvenOdd(int[] array, final int arrayIndex) {
-		int oddIndex = 0;
-		int evenIndex = 0;
-		while (oddIndex < array.length) {
-			if ((array[oddIndex] % 2 != 0)) {
-				evenIndex = findEvenIndex(array, oddIndex);
-				try {
-					array = performArrayElementSwap(array, arrayIndex, evenIndex);
-				} catch (IllegalArgumentException e) {
-					// Do absolutely nothing.
+		/**
+		 * Finds and returns the index of integer which is <= integer k.
+		 * 
+		 * @param array
+		 * @param startingIndex index from where to start search.
+		 * @param k             an integer for we wish to find a value <= that of.
+		 * @return the index of an integer which is <= k, -1 otherwise.
+		 */
+		static int findSmallestIntegerIndex(final int[] array, final int startingIndex, final int k) {
+			int smallestIntIndex = -1;
+			for (int i = startingIndex; i < array.length; i++) {
+				if (array[i] <= k) {
+					smallestIntIndex = i;
+					break;
 				}
 			}
-			oddIndex++;
+			return smallestIntIndex;
 		}
-		return array;
-	}
 
-	/**
-	 * Swaps array element with each other (replaces element at swapIndex with
-	 * element at targetIndex and vice-versa).
-	 * 
-	 * @param array
-	 * @param sourceIndex index of the element to be swapped with targetIndex.
-	 * @param targetIndex index of the element to be swapped with sourceIndex.
-	 * @return the modified array with elements being swapped with each other.
-	 */
-	private static int[] performArrayElementSwap(final int[] array, int sourceIndex, int targetIndex) {
-		if (array.length == 0) {
-			throw new IllegalArgumentException("Array is empty and cannot be swapped.");
-		} else if ((sourceIndex < 0) || (targetIndex < 0)) {
-			throw new IllegalArgumentException("Negative indicies are invalid for an array.");
-		} else if (sourceIndex == targetIndex) {
-			throw new IllegalArgumentException("Both indicies are equal.");
-		} else {
-			final int source = array[sourceIndex];
-			array[sourceIndex] = array[targetIndex];
-			array[targetIndex] = source;
-			return array;
-		}
-	}
-
-	/**
-	 * Runs in O(n) in worst case if we have to traverse entire array.
-	 * 
-	 * @param array
-	 * @param startingIndex index from where to start search from.
-	 * @return index of element which is even -1 otherwise.
-	 */
-	private static int findEvenIndex(final int[] array, final int startingIndex) {
-		int index = -1;
-		for (int i = startingIndex; i < array.length; i++) {
-			if ((array[i] % 2 == 0)) {
-				index = i;
-				break;
+		/**
+		 * 
+		 * @param s string must not be empty
+		 * @return string as stringBuilder instance containing reverse of string s.
+		 */
+		static StringBuilder reverseString(String s) {
+			if (s.length() == 0 || s == null) {
+				throw new IllegalArgumentException("String is empty!");
+			} else if (s.length() == 1) {
+				return new StringBuilder(s);
+			} else {
+				final StringBuilder stringBuilder = new StringBuilder();
+				return reverseString(s, stringBuilder, s.length() - 1);
 			}
 		}
-		return index;
+
+		/**
+		 * 
+		 * @param string        string.
+		 * @param stringBuilder stringBuilder instance.
+		 * @param stringLength  length of string.
+		 * @return stringBuilder instance containing reverse of string s.
+		 */
+		static StringBuilder reverseString(
+				final String string,
+				final StringBuilder stringBuilder,
+				final int stringLength) {
+			if (stringLength < 0)
+				return null;
+			else {
+				stringBuilder.append(string.charAt(stringLength));
+				reverseString(string, stringBuilder, stringLength - 1);
+				return stringBuilder;
+			}
+		}
+
+		/**
+		 * Finds and returns an array of two digits that sum to integer k
+		 * <p/>
+		 * Algorithm works by maintaining two pointers one at start of an array while
+		 * other one at end. Comparison takes place at each recursive call if it has
+		 * found a match it simply returns the array containing those two digits.
+		 * <p/>
+		 * Otherwise pointers gets updated and recursive calls takes place until both
+		 * pointers meet. In that case no match was found and null is returned.
+		 * 
+		 * <p/>
+		 * In worst case algorithm runs in O(n) and uses O(n) space.
+		 * 
+		 * @param sortedArray
+		 * @param startingIndex
+		 * @param lastIndex
+		 * @param k
+		 * @return an array containing two digits that add up to integer k. null
+		 *         otherwise
+		 */
+		private static int[] digitsOfSum(final int[] sortedArray,
+				final int startingIndex,
+				final int lastIndex,
+				final int k) {
+
+			if (startingIndex == lastIndex)
+				return null;
+			else if ((sortedArray[startingIndex]) + (sortedArray[lastIndex]) == k) {
+				final int[] matchedPairs = { sortedArray[startingIndex], sortedArray[lastIndex] };
+				return matchedPairs;
+			} else if ((sortedArray[startingIndex]) + (sortedArray[lastIndex]) > k) {
+				return digitsOfSum(sortedArray, startingIndex, lastIndex - 1, k);
+			} else if ((sortedArray[startingIndex]) + (sortedArray[lastIndex]) < k) {
+				return digitsOfSum(sortedArray, startingIndex + 1, lastIndex, k);
+			}
+			return null;
+		}
+
+		/**
+		 * 
+		 * @param array
+		 * @param i     index i which is > j, k.
+		 * @param j     index which is < i.
+		 * @param k     index which is < i.
+		 * @return returns the index of an integer which the sum of two previous
+		 *         integers -1 otherwise.
+		 */
+		private static int sumOfTwoPrevious(final int[] array, final int i, final int j, final int k) {
+			if (i == array.length)
+				return -1;
+			else if (array[i] == (array[j]) + (array[k]))
+				return i;
+			else {
+				return sumOfTwoPrevious(array, i + 1, j + 1, k + 1);
+			}
+		}
 	}
 }

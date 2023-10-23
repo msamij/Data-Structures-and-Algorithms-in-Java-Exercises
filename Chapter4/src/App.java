@@ -8,7 +8,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         RecursiveAlgorithms.diskUsage(new File("/home/muhammadsami/Public/Study/Books/OOP"));
 
-        final int[] maxArray = { 2, 3, 5, 4, 1 };
+        final int[] maxArray = { 2, 3, 5, 4, 10 };
         System.out.println("");
         System.out.println("Max element is: " + Reinforcement.reinforcement1(maxArray, maxArray.length - 1));
 
@@ -78,10 +78,24 @@ public class App {
         System.out.println(Creativity.creativity7("pots&pans"));
 
         System.out.println("");
-        System.out.println(Creativity.creativity8("i"));
+        System.out.println(Creativity.creativity8("racecar"));
 
         System.out.println("");
         final int[] oddEvenArray = { 3, 9, 2, 4, 0, 6, 8 };
         System.out.println(Arrays.toString(Creativity.creativity9(oddEvenArray)));
+
+        System.out.println("");
+        final int[] unsortedArray = { 2, 4, 6, 7, 9, 1, 0 };
+        System.out.println(Arrays.toString(Creativity.creativity10(unsortedArray, 4)));
+
+        System.out.println("");
+        final int[] sortedArray2 = { 0, 2, 3, 4, 6, 18, 25 };
+        final int[] matchedPairs = Creativity.creativity11(sortedArray2, 18);
+        System.out.println(Arrays.toString(matchedPairs));
+
+        System.out.println("");
+        final int[] sumOfTwoPrevious = { 1, 2, 3, 3, 6, 9, 18 };
+        System.out.println("Index of an integer which is sum of two previous integers: " +
+                Creativity.creativity12(sumOfTwoPrevious));
     }
 }

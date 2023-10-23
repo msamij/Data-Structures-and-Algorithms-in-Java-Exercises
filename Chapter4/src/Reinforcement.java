@@ -12,16 +12,7 @@ public final class Reinforcement {
 		if (A.length == 0) {
 			throw new IllegalArgumentException("Array length must be >= 1.");
 		}
-		return maximumArray(A, n, A[n]);
-	}
-
-	private static int maximumArray(final int[] A, int n, final int largest) {
-		if (n == 0)
-			return A[n];
-		else {
-			final int maximum = maximumArray(A, n - 1, A[n]);
-			return (maximum >= A[n]) ? maximum : A[n];
-		}
+		return ReinforcementUtility.maximumArray(A, n, A[n]);
 	}
 
 	/**
@@ -33,28 +24,7 @@ public final class Reinforcement {
 	 * Returns index of the target if the target value is found in the data array.
 	 */
 	public static int reinforcement2(final int[] data, final int target) {
-		return binarySearch(data, target, 0, data.length - 1);
-	}
-
-	/**
-	 * Returns true if the target value is found in the indicated portion of the
-	 * data array. This search only considers the array portion from data[low] to
-	 * data[high] inclusive.
-	 */
-	private static int binarySearch(final int[] data, final int target, final int low, final int high) {
-		if (low > high)
-			return -1;
-		else {
-			final int mid = (low + high) / 2;
-			if (target == data[mid])
-				return mid;
-
-			else if (target < data[mid]) {
-				return binarySearch(data, target, low, mid - 1);
-			} else {
-				return binarySearch(data, target, mid + 1, high);
-			}
-		}
+		return ReinforcementUtility.binarySearch(data, target, 0, data.length - 1);
 	}
 
 	/**
@@ -78,14 +48,7 @@ public final class Reinforcement {
 		if (digits.isEmpty()) {
 			throw new IllegalArgumentException("String length is 0");
 		}
-		return stringToInteger(digits.toCharArray(), digits.length() - 1);
-	}
-
-	private static int stringToInteger(final char[] digits, final int n) {
-		if (n == 0) {
-			return Integer.parseInt(Character.toString(digits[0]));
-		}
-		return Integer.parseInt(Integer.toString(stringToInteger(digits, n - 1)) + digits[n]);
+		return ReinforcementUtility.stringToInteger(digits.toCharArray(), digits.length() - 1);
 	}
 
 	/**
@@ -102,21 +65,7 @@ public final class Reinforcement {
 			return 0;
 		if (n < 0)
 			throw new IllegalArgumentException("Exponent must be positive.");
-		return nonRecursivePower(x, n);
-	}
-
-	private static long nonRecursivePower(final long x, final long n) {
-		long base = x;
-		long result = 1;
-		long exponent = n;
-		while (exponent != 0) {
-			if ((exponent % 2) != 0) {
-				result = (result * base);
-			}
-			base = (base * base);
-			exponent >>= 1;
-		}
-		return result;
+		return ReinforcementUtility.nonRecursivePower(x, n);
 	}
 
 	/**
@@ -130,17 +79,81 @@ public final class Reinforcement {
 		int sum = 0;
 		int recursiveDepth = n;
 		while (recursiveDepth >= 0) {
-			sum += linearSum(array[recursiveDepth], array[recursiveDepth].length - 1);
+			sum += ReinforcementUtility.linearSum(array[recursiveDepth], array[recursiveDepth].length - 1);
 			recursiveDepth -= 1;
 		}
 		return sum;
 	}
 
-	private static int linearSum(final int[] array, int n) {
-		if (n == 0)
-			return array[n];
-		else {
-			return (array[n] + linearSum(array, n - 1));
+	private static final class ReinforcementUtility {
+		private ReinforcementUtility() {
+		}
+
+		/**
+		 * Recursively finds maximum element in the array
+		 * 
+		 * @param array
+		 * @param currentIndex
+		 * @param largest
+		 * @return
+		 */
+		static int maximumArray(final int[] array, int currentIndex, final int largest) {
+			if (currentIndex == 0)
+				return array[currentIndex];
+			else {
+				final int maximum = maximumArray(array, currentIndex - 1, array[currentIndex]);
+				return (maximum >= array[currentIndex]) ? maximum : array[currentIndex];
+			}
+		}
+
+		/**
+		 * Returns index of the target value if found in the indicated portion of the
+		 * data array. This search only considers the array portion from data[low] to
+		 * data[high] inclusive.
+		 */
+		static int binarySearch(final int[] data, final int target, final int low, final int high) {
+			if (low > high)
+				return -1;
+			else {
+				final int mid = (low + high) / 2;
+				if (target == data[mid])
+					return mid;
+
+				else if (target < data[mid]) {
+					return binarySearch(data, target, low, mid - 1);
+				} else {
+					return binarySearch(data, target, mid + 1, high);
+				}
+			}
+		}
+
+		static int stringToInteger(final char[] digits, final int n) {
+			if (n == 0) {
+				return Integer.parseInt(Character.toString(digits[0]));
+			}
+			return Integer.parseInt(Integer.toString(stringToInteger(digits, n - 1)) + digits[n]);
+		}
+
+		static long nonRecursivePower(final long x, final long n) {
+			long base = x;
+			long result = 1;
+			long exponent = n;
+			while (exponent != 0) {
+				if ((exponent % 2) != 0) {
+					result = (result * base);
+				}
+				base = (base * base);
+				exponent >>= 1;
+			}
+			return result;
+		}
+
+		static int linearSum(final int[] array, int n) {
+			if (n == 0)
+				return array[n];
+			else {
+				return (array[n] + linearSum(array, n - 1));
+			}
 		}
 	}
 }
