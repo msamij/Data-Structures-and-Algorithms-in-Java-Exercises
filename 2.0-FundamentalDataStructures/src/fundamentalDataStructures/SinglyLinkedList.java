@@ -186,6 +186,9 @@ public class SinglyLinkedList<E> implements Cloneable {
 		head = oldTail;
 	}
 
+	public void reverseListRecursively() {
+	}
+
 	public void printList() {
 		int counter = 1;
 		Node<E> walk = head;

@@ -97,5 +97,8 @@ public class App {
         final int[] sumOfTwoPrevious = { 1, 2, 3, 3, 6, 9, 18 };
         System.out.println("Index of an integer which is sum of two previous integers: " +
                 Creativity.creativity12(sumOfTwoPrevious));
+
+        System.out.println("");
+        Creativity.creativity14();
     }
 }

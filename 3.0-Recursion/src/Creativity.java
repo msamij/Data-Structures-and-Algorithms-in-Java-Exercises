@@ -3,6 +3,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Stack;
 
+import fundamentalDataStructures.SinglyLinkedList;
+
 public final class Creativity {
 	private Creativity() {
 	}
@@ -139,6 +141,9 @@ public final class Creativity {
 	 * are listed in increasing order. Given a number k, describe a recursive
 	 * algorithm to find two integers in A that sum to k, if such a pair exists.
 	 * What is the running time of your algorithm?
+	 * 
+	 * <p/>
+	 * Runs in O(n) time.
 	 */
 	public static int[] creativity11(final int[] sortedArray, final int k) {
 		if (sortedArray.length == 0) {
@@ -161,6 +166,57 @@ public final class Creativity {
 			throw new IllegalArgumentException("Array must contain more than two elements!");
 		}
 		return CreativityUtility.sumOfTwoPrevious(A, 2, 0, 1);
+	}
+
+	/**
+	 * C-5.24 Isabel has an interesting way of summing up the values in an array A
+	 * of n integers, where n is a power of two. She creates an array B of half the
+	 * size of A and sets B[i] = A[2i] + A[2i + 1], for i = 0, 1, . . . , (n/2) − 1.
+	 * If B has size 1, then she outputs B[0]. Otherwise, she replaces A with B, and
+	 * repeats the process. What is the running time of her algorithm?
+	 *
+	 * </p>
+	 * Algorithm:
+	 * 
+	 * <p/>
+	 * Let A = [2, 4, 6, 8, 16, 32, 64, 128, ...n] n = 16
+	 * 
+	 * <p/>
+	 * Let A be containing 16 elements.
+	 * 
+	 * <p/>
+	 * Let B be an array of size (A.size / 2) = 8
+	 * 
+	 * <p/>
+	 * Hence B contains [2, 4, 6, 8, 16, 32, 64, 128]
+	 * 
+	 * <p/>
+	 * /// for i -> to B.size - 1
+	 * <p/>
+	 * ////// B[i] = A[2i] + A[2i +1]
+	 * 
+	 * <p/>
+	 * For loop runs in time proportional to size of array B.
+	 * Which is O(n). Hence total running time is O(n).
+	 */
+	public static int[] creativity13(final int[] arrayA, final int[] arrayB) {
+		for (int i = 0; i < arrayB.length; i++) {
+			arrayB[i] = (arrayA[2 * i] + arrayA[2 * i + 1]);
+		}
+		return arrayB;
+	}
+
+	/**
+	 * C-5.25 Describe a fast recursive algorithm for reversing a singly linked list
+	 * L, so that the ordering of the nodes becomes opposite of what it was before.
+	 */
+	public static void creativity14() {
+		SinglyLinkedList<Integer> singlyLinkedList = new SinglyLinkedList<>();
+		singlyLinkedList.addFirst(1);
+		singlyLinkedList.addLast(2);
+		singlyLinkedList.addLast(3);
+
+		singlyLinkedList.printList();
 	}
 
 	private static final class CreativityUtility {
